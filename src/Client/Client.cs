@@ -1,6 +1,6 @@
 namespace NovelCraft.Sdk.Client;
 
-public class Client : IClient {
+internal class Client : IClient {
   public event EventHandler<NovelCraft.Sdk.Messages.IMessage>? MessageReceivedEvent;
 
   public void Connect() {
