@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace NovelCraft.Sdk.Messages;
 
-internal record PositionType<T> {
+internal record Position<T> {
   [JsonPropertyName("x")]
   public required T X { get; init; }
 

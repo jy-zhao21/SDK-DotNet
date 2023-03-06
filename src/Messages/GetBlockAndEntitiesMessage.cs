@@ -18,7 +18,7 @@ internal record ClientGetBlocksAndEntitiesMessage : MessageBase, IClientMessage 
 internal record ServerGetBlocksAndEntitiesMessage : MessageBase {
   public record SectionType {
     [JsonPropertyName("position")]
-    public required PositionType<int> Position { get; init; }
+    public required Position<int> Position { get; init; }
 
     [JsonPropertyName("blocks")]
     public required List<int> Blocks { get; init; }
@@ -32,10 +32,10 @@ internal record ServerGetBlocksAndEntitiesMessage : MessageBase {
     public required string UniqueId { get; init; }
 
     [JsonPropertyName("position")]
-    public required PositionType<decimal> Position { get; init; }
+    public required Position<decimal> Position { get; init; }
 
     [JsonPropertyName("orientation")]
-    public required OrientationType Orientation { get; init; }
+    public required Orientation Orientation { get; init; }
   }
 
 
