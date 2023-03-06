@@ -11,7 +11,7 @@ internal record ClientGetBlocksAndEntitiesMessage : MessageBase, IClientMessage 
   public override IMessage.MessageKind Type => IMessage.MessageKind.GetBlocksAndEntities;
 
   [JsonPropertyName("token")]
-  public required string Token { get; init; }
+  public required string? Token { get; init; }
 }
 
 

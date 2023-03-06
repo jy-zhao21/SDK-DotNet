@@ -7,5 +7,5 @@ public interface IClientMessage : IMessage {
   /// <summary>
   /// Gets the token of the client.
   /// </summary>
-  public string Token { get; init; }
+  public string? Token { get; init; }
 }

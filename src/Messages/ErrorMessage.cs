@@ -17,7 +17,7 @@ internal record ClientErrorMessage : MessageBase, IClientMessage, IErrorMessage 
   public required string Message { get; init; }
 
   [JsonPropertyName("token")]
-  public required string Token { get; init; }
+  public required string? Token { get; init; }
 }
 
 
