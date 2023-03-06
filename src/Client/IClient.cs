@@ -7,7 +7,7 @@ public interface IClient {
   /// <summary>
   /// Occurs when a message is received from the server.
   /// </summary>
-  public event EventHandler<NovelCraft.Sdk.Messages.IMessage> MessageReceivedEvent;
+  public event EventHandler<NovelCraft.Sdk.Messages.IMessage>? MessageReceivedEvent;
 
 
   /// <summary>
