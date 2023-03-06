@@ -1,10 +1,21 @@
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace NovelCraft.Sdk.Messages;
 
-internal record GetBlocksAndEntitiesMessageClientBound : MessageBase {
+
+internal record ClientGetBlocksAndEntitiesMessage : MessageBase, IClientMessage {
+  [JsonPropertyName("bound_to")]
+  public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
+
+  [JsonPropertyName("type")]
+  public override IMessage.MessageKind Type => IMessage.MessageKind.GetBlocksAndEntities;
+
+  [JsonPropertyName("token")]
+  public required string Token { get; init; }
+}
+
+
+internal record ServerGetBlocksAndEntitiesMessage : MessageBase {
   public record SectionType {
     [JsonPropertyName("position")]
     public required PositionType<int> Position { get; init; }
@@ -28,14 +39,11 @@ internal record GetBlocksAndEntitiesMessageClientBound : MessageBase {
   }
 
 
-  [JsonIgnore]
-  public override JsonNode Json => JsonNode.Parse(JsonSerializer.Serialize(this))!;
-
   [JsonPropertyName("bound_to")]
-  public override BoundToKind BoundTo => BoundToKind.ServerBound;
+  public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ClientBound;
 
   [JsonPropertyName("type")]
-  public override MessageKind Type => MessageKind.GetBlocksAndEntities;
+  public override IMessage.MessageKind Type => IMessage.MessageKind.GetBlocksAndEntities;
 
   [JsonPropertyName("sections")]
   public required List<SectionType> Sections { get; init;}

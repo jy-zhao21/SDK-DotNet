@@ -1,34 +1,36 @@
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Text.Json.Serialization;
 
 namespace NovelCraft.Sdk.Messages;
 
-internal record ErrorMessageClientBound : ErrorMessageBase {
-  [JsonIgnore]
-  public override JsonNode Json => JsonNode.Parse(JsonSerializer.Serialize(this))!;
 
+internal record ClientErrorMessage : MessageBase, IClientMessage, IErrorMessage {
   [JsonPropertyName("bound_to")]
-  public override BoundToKind BoundTo => BoundToKind.ClientBound;
+  public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
+
+  [JsonPropertyName("type")]
+  public override IMessage.MessageKind Type => IMessage.MessageKind.Error;
 
   [JsonPropertyName("code")]
-  public override required int Code { get; init; }
+  public required int Code { get; init; }
 
   [JsonPropertyName("message")]
-  public override required string Message { get; init; }
+  public required string Message { get; init; }
+
+  [JsonPropertyName("token")]
+  public required string Token { get; init; }
 }
 
 
-internal record ErrorMessageServerBound : ErrorMessageBase {
-  [JsonIgnore]
-  public override JsonNode Json => JsonNode.Parse(JsonSerializer.Serialize(this))!;
-
+internal record ServerErrorMessage : MessageBase, IErrorMessage {
   [JsonPropertyName("bound_to")]
-  public override BoundToKind BoundTo => BoundToKind.ServerBound;
+  public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ClientBound;
+
+  [JsonPropertyName("type")]
+  public override IMessage.MessageKind Type => IMessage.MessageKind.Error;
 
   [JsonPropertyName("code")]
-  public override required int Code { get; init; }
+  public required int Code { get; init; }
 
   [JsonPropertyName("message")]
-  public override required string Message { get; init; }
+  public required string Message { get; init; }
 }
