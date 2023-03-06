@@ -1,0 +1,14 @@
+namespace NovelCraft.Sdk;
+
+internal class Entity : IEntity {
+  public IOrientation Orientation { get; set; } = new Orientation(0, 0);
+  public IPosition<decimal> Position { get; set; } = new Position<decimal>(0, 0, 0);
+  public int TypeId { get; }
+  public int UniqueId { get; }
+
+
+  public Entity(int uniqueId, int typeId) {
+    UniqueId = uniqueId;
+    TypeId = typeId;
+  }
+}

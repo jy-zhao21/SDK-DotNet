@@ -21,11 +21,6 @@ public interface IAgent : IEntity {
   public MovementKind? Movement { get; set; }
 
   /// <summary>
-  /// Gets or sets the orientation of the agent.
-  /// </summary>
-  public new IOrientation Orientation { get; set; }
-
-  /// <summary>
   /// Gets the token of the agent.
   /// </summary>
   public string Token { get; }
@@ -40,6 +35,12 @@ public interface IAgent : IEntity {
   /// Performs a jump.
   /// </summary>
   public void Jump();
+
+  /// <summary>
+  /// Makes the agent look at a position.
+  /// </summary>
+  /// <param name="position">The position to look at.</param>
+  public void LookAt(IPosition<decimal> position);
 
   /// <summary>
   /// Sets the movement of the agent.

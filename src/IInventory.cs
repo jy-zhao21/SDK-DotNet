@@ -6,7 +6,7 @@ public interface IInventory {
   /// </summary>
   /// <param name="index">The slot to get the item from.</param>
   /// <returns>The item in the specified slot.</returns>
-  public IItemStack this[int index] { get; }
+  public IItemStack? this[int index] { get; }
 
   /// <summary>
   /// Gets the number of slots in the hot bar.
@@ -34,11 +34,6 @@ public interface IInventory {
   public void DropItem(int slot, int count);
 
   /// <summary>
-  /// Swaps the contents of two slots.
-  /// </summary>
-  public void SwapSlots(int slot1, int slot2);
-
-  /// <summary>
   /// Merges items from two slots into one slot.
   /// </summary>
   /// <param name="fromSlot">The slot to take items from.</param>
@@ -50,4 +45,9 @@ public interface IInventory {
   /// left in fromSlot.
   /// </remarks>
   public void MergeSlots(int fromSlot, int toSlot);
+
+  /// <summary>
+  /// Swaps the contents of two slots.
+  /// </summary>
+  public void SwapSlots(int slot1, int slot2);
 }
