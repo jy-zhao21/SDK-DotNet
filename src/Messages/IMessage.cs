@@ -25,25 +25,35 @@ public interface IMessage {
   /// Represents the type of the message.
   /// </summary>
   public enum MessageKind {
-    /// <summary>
-    /// The message is an error message.
-    /// </summary>
-    Error,
+    AfterBlockChange = 100,
+    AfterEntityAttack,
+    AfterEntityCreate,
+    AfterEntityDespawn,
+    AfterEntityHurt,
+    AfterEntityOrientationChange,
+    AfterEntityPositionChange,
+    AfterEntityRemove,
+    AfterEntitySpawn,
+    AfterPlayerInventoryChange,
 
-    /// <summary>
-    /// The message is used to get the blocks and entities.
-    /// </summary>
-    GetBlocksAndEntities,
+    Error = 200,
 
-    /// <summary>
-    /// The message is used to get the player information.
-    /// </summary>
+    GetBlocksAndEntities = 300,
     GetPlayerInfo,
+    GetTick,
 
-    /// <summary>
-    /// The message is heartbeat message.
-    /// </summary>
-    Ping
+    Ping = 400,
+
+    PerformAttack = 500,
+    PerformCraft,
+    PerformDropItem,
+    PerformJump,
+    PerformMergeSlots,
+    PerformMove,
+    PerformRotate,
+    PerformSwapSlots,
+    PerformSwitchMainHandSlot,
+    PerformUse,
   }
 
 

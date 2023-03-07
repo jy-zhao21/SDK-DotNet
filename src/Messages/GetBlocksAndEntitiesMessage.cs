@@ -47,4 +47,7 @@ internal record ServerGetBlocksAndEntitiesMessage : MessageBase {
 
   [JsonPropertyName("sections")]
   public required List<SectionType> Sections { get; init;}
+
+  [JsonPropertyName("entities")]
+  public required List<EntityType> Entities { get; init; }
 }
