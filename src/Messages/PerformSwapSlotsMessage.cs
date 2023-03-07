@@ -13,6 +13,9 @@ internal record ClientPerformSwapSlotsMessage : MessageBase, IClientMessage {
   [JsonPropertyName("token")]
   public required string? Token { get; init; }
 
-  [JsonPropertyName("slots_number")]
-  public required int[] SlotsNumber { get; init; }
+  [JsonPropertyName("slot_a")]
+  public required int SlotA { get; init; }
+
+  [JsonPropertyName("slot_b")]
+  public required int SlotB { get; init; }
 }

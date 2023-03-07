@@ -12,7 +12,13 @@ internal record ClientPerformMoveMessage : MessageBase, IClientMessage {
 
   [JsonPropertyName("token")]
   public required string? Token { get; init; }
-
-  //   [JsonPropertyName("direction")]
-  //   public required Direction Direction { get; init; }
+  public enum Direction {
+    Stop,
+    Forward,
+    Backward,
+    Left,
+    Right
+  }
+  [JsonPropertyName("direction")]
+  public required Direction DirectionType { get; init; }
 }

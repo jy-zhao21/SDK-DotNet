@@ -13,6 +13,6 @@ internal record ClientPerformCraftMessage : MessageBase, IClientMessage {
   [JsonPropertyName("token")]
   public required string? Token { get; init; }
 
-  //   [JsonPropertyName("craft_sequence")]
-  //   public required CraftSequence CraftSequence { get; init; }
+  [JsonPropertyName("item_id_sequence")]
+  public required List<int> ItemIdSequence { get; init; }
 }
