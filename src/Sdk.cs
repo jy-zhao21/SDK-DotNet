@@ -10,6 +10,11 @@ public static class Sdk {
   public static IAgent? Agent { get; private set; } = null;
 
   /// <summary>
+  /// Gets the block collection.
+  /// </summary>
+  public static IBlockSource? Blocks { get; private set; } = null;
+
+  /// <summary>
   /// Gets the client for sending and receiving messages directly to or from the server.
   /// </summary>
   public static Client.IClient? Client { get; private set; } = null;
@@ -17,7 +22,7 @@ public static class Sdk {
   /// <summary>
   /// Gets the list of all entities in the world.
   /// </summary>
-  public static List<IEntity> Entities { get; } = new List<IEntity>();
+  public static List<IEntity>? Entities { get; } = null;
 
   /// <summary>
   /// Gets current tick.
@@ -46,20 +51,6 @@ public static class Sdk {
 
   private static (int LastTick, DateTime LastTickTime)? _lastTickInfo = null;
 
-
-  /// <summary>
-  /// Gets the entity with the specified unique ID.
-  /// </summary>
-  /// <param name="uniqueId">The unique ID of the entity.</param>
-  /// <returns>The entity with the specified unique ID. Null if no entity with the specified unique ID exists.</returns>
-  public static IEntity? GetEntity(int uniqueId) => throw new NotImplementedException();
-
-  /// <summary>
-  /// Gets the block at the specified position.
-  /// </summary>
-  /// <param name="position">The position of the block.</param>
-  /// <returns>The block at the specified position. Null if the section containing the block is not loaded.</returns>
-  public static IBlock? GetBlockAt(IPosition<int> position) => throw new NotImplementedException();
 
   /// <summary>
   /// Initializes the SDK.

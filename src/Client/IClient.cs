@@ -11,16 +11,6 @@ public interface IClient {
 
 
   /// <summary>
-  /// Connects to the server.
-  /// </summary>
-  public void Connect();
-
-  /// <summary>
-  /// Disconnects from the server.
-  /// </summary>
-  public void Disconnect();
-
-  /// <summary>
   /// Sends a message to the server.
   /// </summary>
   /// <param name="message">The message to be sent.</param>
