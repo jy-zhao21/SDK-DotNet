@@ -29,7 +29,7 @@ internal record ServerGetBlocksAndEntitiesMessage : MessageBase {
     public required int TypeId { get; init; }
 
     [JsonPropertyName("unique_id")]
-    public required string UniqueId { get; init; }
+    public required int UniqueId { get; init; }
 
     [JsonPropertyName("position")]
     public required Position<decimal> Position { get; init; }

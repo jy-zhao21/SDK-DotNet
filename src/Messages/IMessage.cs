@@ -25,7 +25,11 @@ public interface IMessage {
   /// Represents the type of the message.
   /// </summary>
   public enum MessageKind {
-    AfterBlockChange = 100,
+    Ping = 100,
+
+    Error = 200,
+
+    AfterBlockChange = 400,
     AfterEntityAttack,
     AfterEntityCreate,
     AfterEntityDespawn,
@@ -36,13 +40,9 @@ public interface IMessage {
     AfterEntitySpawn,
     AfterPlayerInventoryChange,
 
-    Error = 200,
-
     GetBlocksAndEntities = 300,
     GetPlayerInfo,
     GetTick,
-
-    Ping = 400,
 
     PerformAttack = 500,
     PerformCraft,
