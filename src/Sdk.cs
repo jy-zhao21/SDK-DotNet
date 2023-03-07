@@ -51,6 +51,8 @@ public static class Sdk {
 
   private static (int LastTick, DateTime LastTickTime)? _lastTickInfo = null;
 
+  private static NovelCraft.Utilities.ILogger _logger { get; } = new NovelCraft.Utilities.Logger("SDK");
+
 
   /// <summary>
   /// Initializes the SDK.
