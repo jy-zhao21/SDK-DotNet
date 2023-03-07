@@ -3,7 +3,7 @@ namespace NovelCraft.Sdk;
 /// <summary>
 /// The SDK.
 /// </summary>
-public static class Sdk {
+public static partial class Sdk {
   /// <summary>
   /// Gets the agent representing the player controlled by the user.
   /// </summary>
@@ -23,6 +23,11 @@ public static class Sdk {
   /// Gets the list of all entities in the world.
   /// </summary>
   public static List<IEntity>? Entities { get; } = null;
+
+  /// <summary>
+  /// Gets the logger.
+  /// </summary>
+  public static NovelCraft.Utilities.ILogger Logger { get; } = new NovelCraft.Utilities.Logger("Agent");
 
   /// <summary>
   /// Gets current tick.
@@ -48,10 +53,6 @@ public static class Sdk {
   /// Gets the number of ticks per second.
   /// </summary>
   public static int? TicksPerSecond { get; private set; } = null;
-
-  private static (int LastTick, DateTime LastTickTime)? _lastTickInfo = null;
-
-  private static NovelCraft.Utilities.ILogger _logger { get; } = new NovelCraft.Utilities.Logger("SDK");
 
 
   /// <summary>
