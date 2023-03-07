@@ -24,7 +24,7 @@ public record Config {
   /// The port of the server.
   /// </summary>
   [JsonPropertyName("port")]
-  public required string Port { get; init; }
+  public required int Port { get; init; }
 
   /// <summary>
   /// The token of the client.
