@@ -18,7 +18,10 @@ internal class Client : IClient {
   }
 
 
-  public void Connect(Uri uri) {
+  public Client(string host, int port) {
+
+    Uri uri = new($"{host}:{port}");
+
     Task task = _clientWebSocket.ConnectAsync(uri, CancellationToken.None);
     task.Wait();
     // Wait for connection to complete
