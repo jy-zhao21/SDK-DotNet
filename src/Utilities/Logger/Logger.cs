@@ -1,6 +1,6 @@
 using System.Diagnostics;
 
-namespace NovelCraft.Utilities;
+namespace NovelCraft.Sdk.Utilities.Logger;
 
 /// <summary>
 /// Logger class provides logging functionality.

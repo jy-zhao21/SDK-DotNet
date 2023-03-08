@@ -1,4 +1,4 @@
-namespace NovelCraft.Sdk.Client;
+namespace NovelCraft.Sdk;
 
 /// <summary>
 /// Represents common interfaces for all communication clients.
@@ -7,7 +7,7 @@ public interface IClient {
   /// <summary>
   /// Occurs when a message is received from the server.
   /// </summary>
-  public event EventHandler<NovelCraft.Sdk.Messages.IMessage>? MessageReceived;
+  public event EventHandler<NovelCraft.Sdk.Messages.IMessage>? AfterMessageReceiveEvent;
 
 
   /// <summary>

@@ -14,7 +14,8 @@ internal class Agent : Entity, IAgent {
   private IAgent.MovementKind? _movement = null;
 
 
-  public Agent(string token, int uniqueId): base(uniqueId, 0) {
+  public Agent(string token, int uniqueId, IPosition<decimal> position,
+    IOrientation orientation): base(uniqueId, 0, position, orientation) {
     Token = token;
   }
 

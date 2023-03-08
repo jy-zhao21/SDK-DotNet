@@ -1,4 +1,4 @@
-namespace NovelCraft.Utilities;
+namespace NovelCraft.Sdk.Utilities.Logger;
 
 /// <summary>
 /// Logger interface provides logging functionality.

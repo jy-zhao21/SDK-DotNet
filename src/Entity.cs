@@ -7,8 +7,10 @@ internal class Entity : IEntity {
   public int UniqueId { get; }
 
 
-  public Entity(int uniqueId, int typeId) {
+  public Entity(int uniqueId, int typeId, IPosition<decimal> position, IOrientation orientation) {
     UniqueId = uniqueId;
     TypeId = typeId;
+    Position = position;
+    Orientation = orientation;
   }
 }

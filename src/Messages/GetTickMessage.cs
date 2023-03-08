@@ -24,4 +24,7 @@ internal record ServerGetTickMessage : MessageBase {
 
   [JsonPropertyName("tick")]
   public required int Tick { get; init; }
+
+  [JsonPropertyName("ticks_per_second")]
+  public required int TicksPerSecond { get; init; }
 }

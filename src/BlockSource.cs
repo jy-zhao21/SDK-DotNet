@@ -28,7 +28,7 @@ internal class BlockSource : IBlockSource {
   private Dictionary<IPosition<int>, Section> _sectionDictionary = new();
 
 
-  public void addSection(Section section) {
+  public void AddSection(Section section) {
     _sectionDictionary[section.Position] = section;
   }
 

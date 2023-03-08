@@ -1,9 +1,14 @@
+using NovelCraft.Sdk.Utilities.Logger;
+
 namespace NovelCraft.Sdk;
 
 /// <summary>
 /// The SDK.
 /// </summary>
 public static partial class Sdk {
+  private const int TimerInterval = 30000;
+
+
   /// <summary>
   /// Gets the agent representing the player controlled by the user.
   /// </summary>
@@ -17,17 +22,17 @@ public static partial class Sdk {
   /// <summary>
   /// Gets the client for sending and receiving messages directly to or from the server.
   /// </summary>
-  public static Client.IClient? Client { get; private set; } = null;
+  public static IClient? Client { get; private set; } = null;
 
   /// <summary>
   /// Gets the list of all entities in the world.
   /// </summary>
-  public static List<IEntity>? Entities { get; } = null;
+  public static IEntitySource? Entities { get; private set; } = null;
 
   /// <summary>
   /// Gets the logger.
   /// </summary>
-  public static NovelCraft.Utilities.ILogger Logger { get; } = new NovelCraft.Utilities.Logger("Agent");
+  public static ILogger Logger { get; } = new Logger("User");
 
   /// <summary>
   /// Gets current tick.
@@ -54,12 +59,80 @@ public static partial class Sdk {
   /// </summary>
   public static int? TicksPerSecond { get; private set; } = null;
 
+  internal static ILogger _sdkLogger { get; } = new Logger("SDK");
+
+  private static Config? _config;
+
+  private static (int LastTick, DateTime LastTickTime)? _lastTickInfo = null;
+
+  private static System.Timers.Timer _timer = new(TimerInterval);
+
 
   /// <summary>
   /// Initializes the SDK.
   /// </summary>
   /// <param name="config">The configuration of the SDK.</param>
   public static void Initialize(Config config) {
-    throw new NotImplementedException();
+    _config = config;
+
+    // Initialize the client
+    Client = new Client(config.Host, config.Port);
+    Client.AfterMessageReceiveEvent += OnAfterMessageReceiveEvent;
+
+    // Initialize the timer.
+    _timer.Elapsed += (sender, e) => OnTick();
+    OnTick(); // Manually call the tick event to get information right away.
+    _timer.Start();
+  }
+
+  private static void OnAfterMessageReceiveEvent(object? sender, Messages.IMessage message) {
+    switch (message) {
+      case Messages.ErrorMessage msg:
+        _sdkLogger.Error($"The server returned an error: {msg.Message} ({msg.Code})");
+        break;
+
+      case Messages.ServerGetBlocksAndEntitiesMessage msg:
+        BlockSource blocks = new();
+        foreach (var section in msg.Sections) {
+          blocks.AddSection(
+            new Section(
+              new Position<int>(section.Position.X, section.Position.Y, section.Position.Z),
+              section.Blocks
+            )
+          );
+        }
+        Blocks = blocks;
+
+        EntitySource entities = new();
+        foreach (var entity in msg.Entities) {
+          entities[entity.UniqueId] = new Entity(entity.UniqueId, entity.TypeId,
+            new Position<decimal>(entity.Position.X, entity.Position.Y, entity.Position.Z),
+            new Orientation(entity.Orientation.Yaw, entity.Orientation.Pitch));
+        }
+        Entities = entities;
+        break;
+
+      case Messages.ServerGetPlayerInfoMessage msg:
+        break;
+
+      case Messages.ServerGetTickMessage serverGetTickMessage:
+        _lastTickInfo = (serverGetTickMessage.Tick, DateTime.Now);
+        TicksPerSecond = serverGetTickMessage.TicksPerSecond;
+        break;
+    }
+  }
+
+  private static void OnTick() {
+    Client!.Send(new Messages.ClientGetTickMessage() {
+      Token = _config!.Token
+    });
+
+    Client!.Send(new Messages.ClientGetBlocksAndEntitiesMessage() {
+      Token = _config!.Token
+    });
+
+    Client!.Send(new Messages.ClientGetPlayerInfoMessage() {
+      Token = _config!.Token
+    });
   }
 }
