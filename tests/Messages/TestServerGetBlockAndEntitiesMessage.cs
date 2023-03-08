@@ -1,48 +1,11 @@
-using System.Text.Json;
 using System.Text.Json.Nodes;
 using NovelCraft.Sdk.Messages;
 
 namespace NovelCraft.Sdk.Tests;
 
-public class TestMessages {
+public class TestServerGetBlocksAndEntitiesMessage {
   [Fact]
-  public void TestErrorMessage() {
-    const string jsonStr = @"{
-      ""bound_to"": 1,
-      ""type"": 200,
-      ""code"": 1,
-      ""message"": ""test""
-    }";
-
-    var json = JsonNode.Parse(jsonStr);
-
-    var msg = Parser.Parse(json!);
-
-    var result = msg.Json;
-
-    Assert.Equal(json!.ToJsonString(), result.ToJsonString());
-  }
-
-  [Fact]
-  public void TestClientGetBlocksAndEntitiesMessage() {
-    const string jsonStr = @"
-    {
-      ""bound_to"": 0,
-      ""type"": 300,
-      ""token"": ""test""
-    }";
-
-    var json = JsonNode.Parse(jsonStr);
-
-    var msg = Parser.Parse(json!);
-
-    var result = msg.Json;
-
-    Assert.Equal(json!.ToJsonString(), result.ToJsonString());
-  }
-
-  [Fact]
-  public void TestServerGetBlocksAndEntitiesMessage() {
+  public void TestDeserializationAndSerialization() {
     const string jsonStr = @"
     {
       ""bound_to"": 1,
