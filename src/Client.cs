@@ -12,17 +12,21 @@ internal class Client : IClient {
 
 
   public Client(string host, int port) {
-
     Uri uri = new($"ws://{host}:{port}");
 
-    Task task = _clientWebSocket.ConnectAsync(uri, CancellationToken.None);
-    task.Wait();
-    // Wait for connection to complete
-    while (!task.IsCompletedSuccessfully) {
-      _logger.Error("Connection failed");
-      task = _clientWebSocket.ConnectAsync(uri, CancellationToken.None);
-      task.Wait();
+    while (true) {
+      try {
+        _clientWebSocket.ConnectAsync(uri, CancellationToken.None).Wait();
+        break;
+      } catch (Exception e) {
+        _logger.Error($"Failed to connect to server: {e.Message}");
+        _clientWebSocket = new ClientWebSocket();
+      }
+
+      _logger.Info("Retrying...");
     }
+
+    _logger.Info("Connected to server");
   }
 
 
@@ -38,7 +42,7 @@ internal class Client : IClient {
   private ArraySegment<byte> GetBuffer(byte[] array) {
     return new ArraySegment<byte>(array);
   }
-  
+
   /// <summary>Get buffer from a string</summary>
   /// <param name="str">string</param>
   /// <returns> ArraySegment<byte> </returns>

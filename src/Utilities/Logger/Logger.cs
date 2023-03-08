@@ -34,7 +34,7 @@ internal class Logger : ILogger {
   /// <param name="message">The message</param>
   public void Info(string message) {
     Print($"{GetCurrentTimeString()} ", ConsoleColor.Cyan);
-    Print($"INFO ", ConsoleColor.Blue);
+    Print($"INFO  ", ConsoleColor.Blue);
     Print($"[{_loggingNamespace}] {message}", ConsoleColor.White);
     Console.WriteLine();
   }
@@ -45,7 +45,7 @@ internal class Logger : ILogger {
   /// <param name="message">The message</param>
   public void Warning(string message) {
     Print($"{GetCurrentTimeString()} ", ConsoleColor.Cyan);
-    Print($"WARNING ", ConsoleColor.Yellow);
+    Print($"WARN  ", ConsoleColor.Yellow);
     Print($"[{_loggingNamespace}] {message}", ConsoleColor.Yellow);
     Console.WriteLine();
   }
