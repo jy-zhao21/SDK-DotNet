@@ -27,6 +27,12 @@ public interface IInventory {
   public int Size { get; }
 
   /// <summary>
+  /// Crafts items from the specified ingredients.
+  /// </summary>
+  /// <param name="ingredients">The ingredients to use in the crafting recipe.</param>
+  public void Craft(List<int?> ingredients);
+
+  /// <summary>
   /// Drops items from a slot into the world.
   /// </summary>
   /// <param name="slot">The slot to drop items from.</param>

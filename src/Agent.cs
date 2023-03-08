@@ -1,13 +1,35 @@
+using NovelCraft.Sdk.Messages;
+
 namespace NovelCraft.Sdk;
 
 internal class Agent : Entity, IAgent {
   public IInventory Inventory => _inventory;
-  public IAgent.MovementKind? Movement { 
+
+  public IAgent.MovementKind? Movement {
     get => _movement;
     set {
-      // TODO
+      if (value is null) {
+        _movement = null;
+        return;
+      }
+
+      ClientPerformMoveMessage message = new() {
+        Token = Token,
+        DirectionType = value switch {
+          IAgent.MovementKind.Forward => ClientPerformMoveMessage.Direction.Forward,
+          IAgent.MovementKind.Backward => ClientPerformMoveMessage.Direction.Backward,
+          IAgent.MovementKind.Left => ClientPerformMoveMessage.Direction.Left,
+          IAgent.MovementKind.Right => ClientPerformMoveMessage.Direction.Right,
+          null => ClientPerformMoveMessage.Direction.Stop,
+          _ => throw new NotImplementedException()
+        }
+      };
+
+      Sdk.Client?.Send(message);
+      _movement = value;
     }
   }
+
   public string Token { get; }
 
   private Inventory _inventory = new();
@@ -15,7 +37,7 @@ internal class Agent : Entity, IAgent {
 
 
   public Agent(string token, int uniqueId, IPosition<decimal> position,
-    IOrientation orientation): base(uniqueId, 0, position, orientation) {
+    IOrientation orientation) : base(uniqueId, 0, position, orientation) {
     Token = token;
   }
 
@@ -25,7 +47,11 @@ internal class Agent : Entity, IAgent {
   }
 
   public void Jump() {
-    // TODO
+    ClientPerformJumpMessage message = new() {
+      Token = Token
+    };
+
+    Sdk.Client?.Send(message);
   }
 
   public void LookAt(IPosition<decimal> position) {
@@ -37,6 +63,16 @@ internal class Agent : Entity, IAgent {
   }
 
   public void Use(IAgent.InteractionKind kind) {
-    // TODO
+    ClientPerformUseMessage message = new() {
+      Token = Token,
+      UseType = kind switch {
+        IAgent.InteractionKind.Click => ClientPerformUseMessage.UseKind.UseClick,
+        IAgent.InteractionKind.HoldStart => ClientPerformUseMessage.UseKind.UseStart,
+        IAgent.InteractionKind.HoldEnd => ClientPerformUseMessage.UseKind.UseEnd,
+        _ => throw new NotImplementedException()
+      }
+    };
+
+    Sdk.Client?.Send(message);
   }
 }

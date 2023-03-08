@@ -1,3 +1,5 @@
+using NovelCraft.Sdk.Messages;
+
 namespace NovelCraft.Sdk;
 
 internal class Inventory : IInventory {
@@ -19,10 +21,27 @@ internal class Inventory : IInventory {
   }
 
   public int HotBarSize => 9;
-  public int MainHandSlot { get; set; } = 0;
+
+  public int MainHandSlot {
+    get => _mainHandSlot;
+    set {
+      if (value < 0 || value >= HotBarSize) {
+        throw new IndexOutOfRangeException();
+      }
+
+      _mainHandSlot = value;
+
+      ClientPerformSwitchMainHandSlotMessage message = new() {
+        Token = Sdk.Agent?.Token ?? throw new InvalidOperationException(),
+        NewMainHand = value
+      };
+    }
+  }
+
   public int Size => 36;
 
   private List<ItemStack?> _itemStacks = Enumerable.Repeat<ItemStack?>(null, 36).ToList();
+  private int _mainHandSlot = 0;
 
 
   public Inventory() {
@@ -30,12 +49,27 @@ internal class Inventory : IInventory {
   }
 
 
+  public void Craft(List<int?> ingredients) {
+    ClientPerformCraftMessage message = new() {
+      Token = Sdk.Agent?.Token ?? throw new InvalidOperationException(),
+      ItemIdSequence = ingredients
+    };
+  }
+
   public void DropItem(int slot, int count) {
     if (slot < 0 || slot >= Size) {
       throw new IndexOutOfRangeException();
     }
 
-    // TODO
+    ClientPerformDropItemMessage message = new() {
+      Token = Sdk.Agent?.Token ?? throw new InvalidOperationException(),
+      DropItems = new() {
+        new() {
+          Slot = slot,
+          Count = count
+        }
+      }
+    };
   }
 
   public void MergeSlots(int fromSlot, int toSlot) {
@@ -59,6 +93,10 @@ internal class Inventory : IInventory {
       throw new IndexOutOfRangeException();
     }
 
-    // TODO
+    ClientPerformSwapSlotsMessage message = new() {
+      Token = Sdk.Agent?.Token ?? throw new InvalidOperationException(),
+      SlotA = slot1,
+      SlotB = slot2
+    };
   }
 }

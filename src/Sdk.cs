@@ -61,8 +61,6 @@ public static partial class Sdk {
 
   internal static ILogger _sdkLogger { get; } = new Logger("SDK");
 
-  private static Config? _config;
-
   private static (int LastTick, DateTime LastTickTime)? _lastTickInfo = null;
 
   private static System.Timers.Timer _timer = new(TimerInterval);
@@ -73,8 +71,6 @@ public static partial class Sdk {
   /// </summary>
   /// <param name="config">The configuration of the SDK.</param>
   public static void Initialize(Config config) {
-    _config = config;
-
     // Initialize the client
     Client = new Client(config.Host, config.Port);
     Client.AfterMessageReceiveEvent += OnAfterMessageReceiveEvent;
@@ -113,6 +109,7 @@ public static partial class Sdk {
         break;
 
       case Messages.ServerGetPlayerInfoMessage msg:
+        // TODO
         break;
 
       case Messages.ServerGetTickMessage serverGetTickMessage:
@@ -123,16 +120,18 @@ public static partial class Sdk {
   }
 
   private static void OnTick() {
-    Client!.Send(new Messages.ClientGetTickMessage() {
-      Token = _config!.Token
+    string token = Agent?.Token ?? throw new InvalidOperationException("The SDK is not initialized.");
+
+    Client?.Send(new Messages.ClientGetTickMessage() {
+      Token = token
     });
 
-    Client!.Send(new Messages.ClientGetBlocksAndEntitiesMessage() {
-      Token = _config!.Token
+    Client?.Send(new Messages.ClientGetBlocksAndEntitiesMessage() {
+      Token = token
     });
 
-    Client!.Send(new Messages.ClientGetPlayerInfoMessage() {
-      Token = _config!.Token
+    Client?.Send(new Messages.ClientGetPlayerInfoMessage() {
+      Token = token
     });
   }
 }
