@@ -7,7 +7,7 @@ namespace NovelCraft.Sdk;
 /// The SDK.
 /// </summary>
 public static partial class Sdk {
-  private const int TimerInterval = 30000;
+  private const int TimerInterval = 1000;
 
 
   /// <summary>
@@ -61,10 +61,9 @@ public static partial class Sdk {
   public static int? TicksPerSecond { get; private set; } = null;
 
   internal static ILogger _sdkLogger { get; } = new Logger("SDK");
-
   private static (int LastTick, DateTime LastTickTime)? _lastTickInfo = null;
-
   private static System.Timers.Timer _timer = new(TimerInterval);
+  private static string? _token = null;
 
 
   /// <summary>
@@ -72,6 +71,10 @@ public static partial class Sdk {
   /// </summary>
   /// <param name="config">The configuration of the SDK.</param>
   public static void Initialize(Config config) {
+    _sdkLogger.Info("Initializing SDK...");
+
+    _token = config.Token;
+
     // Initialize the client
     Client = new Client(config.Host, config.Port);
     Client.AfterMessageReceiveEvent += OnAfterMessageReceiveEvent;
@@ -121,7 +124,9 @@ public static partial class Sdk {
   }
 
   private static void OnTick() {
-    string token = Agent?.Token ?? throw new InvalidOperationException("The SDK is not initialized.");
+    _sdkLogger.Info("Getting game information...");
+
+    string token = _token ?? throw new InvalidOperationException("The SDK is not initialized.");
 
     Client?.Send(new ClientGetTickMessage() {
       Token = token

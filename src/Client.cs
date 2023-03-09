@@ -14,6 +14,8 @@ internal class Client : IClient {
   public Client(string host, int port) {
     Uri uri = new($"ws://{host}:{port}");
 
+    _logger.Info($"Connecting to server at {uri}...");
+
     while (true) {
       try {
         _clientWebSocket.ConnectAsync(uri, CancellationToken.None).Wait();
@@ -31,9 +33,7 @@ internal class Client : IClient {
 
 
   public void Send(NovelCraft.Utilities.Messages.IMessage message) {
-    if (this._clientWebSocket.State == WebSocketState.Connecting) {
-      this._clientWebSocket.SendAsync(this.GetBuffer(message.Json.ToJsonString()), WebSocketMessageType.Text, false, CancellationToken.None);
-    }
+    this._clientWebSocket.SendAsync(this.GetBuffer(message.Json.ToJsonString()), WebSocketMessageType.Text, false, CancellationToken.None);
   }
 
   /// <summary>Get buffer from a byte array</summary>
