@@ -9,8 +9,8 @@ internal class Client : IClient {
   public event EventHandler<IMessage>? AfterMessageReceiveEvent;
 
 
-  const int BufferSize = 1048576;
-  const int MaxIdleTime = 10000;
+  private const int BufferSize = 1048576;
+  private const int MaxIdleTime = 10000;
 
 
   private ClientWebSocket _clientWebSocket;
@@ -63,11 +63,6 @@ internal class Client : IClient {
   private void ReceiveMessage() {
     try {
       WebSocketReceiveResult result = _clientWebSocket.ReceiveAsync(new ArraySegment<byte>(_receiveBuffer), CancellationToken.None).Result;
-
-      if (result.MessageType == WebSocketMessageType.Close) {
-        _clientWebSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, "", CancellationToken.None);
-        throw new Exception("Server closed connection");
-      }
 
     } catch (Exception e) {
       _logger.Error($"Failed to receive message: {e.Message}");
