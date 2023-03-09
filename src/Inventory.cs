@@ -1,4 +1,4 @@
-using NovelCraft.Sdk.Messages;
+using NovelCraft.Utilities.Messages;
 
 namespace NovelCraft.Sdk;
 

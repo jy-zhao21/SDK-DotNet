@@ -1,5 +1,5 @@
 using System.Text.Json.Nodes;
-using NovelCraft.Sdk.Messages;
+using NovelCraft.Utilities.Messages;
 
 namespace NovelCraft.Sdk.Tests;
 

@@ -1,4 +1,5 @@
-using NovelCraft.Sdk.Utilities.Logger;
+using NovelCraft.Utilities.Logger;
+using NovelCraft.Utilities.Messages;
 
 namespace NovelCraft.Sdk;
 
@@ -81,13 +82,13 @@ public static partial class Sdk {
     _timer.Start();
   }
 
-  private static void OnAfterMessageReceiveEvent(object? sender, Messages.IMessage message) {
+  private static void OnAfterMessageReceiveEvent(object? sender, IMessage message) {
     switch (message) {
-      case Messages.ErrorMessage msg:
+      case ErrorMessage msg:
         _sdkLogger.Error($"The server returned an error: {msg.Message} ({msg.Code})");
         break;
 
-      case Messages.ServerGetBlocksAndEntitiesMessage msg:
+      case ServerGetBlocksAndEntitiesMessage msg:
         BlockSource blocks = new();
         foreach (var section in msg.Sections) {
           blocks.AddSection(
@@ -108,11 +109,11 @@ public static partial class Sdk {
         Entities = entities;
         break;
 
-      case Messages.ServerGetPlayerInfoMessage msg:
+      case ServerGetPlayerInfoMessage msg:
         // TODO
         break;
 
-      case Messages.ServerGetTickMessage serverGetTickMessage:
+      case ServerGetTickMessage serverGetTickMessage:
         _lastTickInfo = (serverGetTickMessage.Tick, DateTime.Now);
         TicksPerSecond = serverGetTickMessage.TicksPerSecond;
         break;
@@ -122,15 +123,15 @@ public static partial class Sdk {
   private static void OnTick() {
     string token = Agent?.Token ?? throw new InvalidOperationException("The SDK is not initialized.");
 
-    Client?.Send(new Messages.ClientGetTickMessage() {
+    Client?.Send(new ClientGetTickMessage() {
       Token = token
     });
 
-    Client?.Send(new Messages.ClientGetBlocksAndEntitiesMessage() {
+    Client?.Send(new ClientGetBlocksAndEntitiesMessage() {
       Token = token
     });
 
-    Client?.Send(new Messages.ClientGetPlayerInfoMessage() {
+    Client?.Send(new ClientGetPlayerInfoMessage() {
       Token = token
     });
   }

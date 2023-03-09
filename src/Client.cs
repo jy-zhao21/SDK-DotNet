@@ -1,10 +1,10 @@
 using System.Net.WebSockets;
-using NovelCraft.Sdk.Utilities.Logger;
+using NovelCraft.Utilities.Logger;
 
 namespace NovelCraft.Sdk;
 
 internal class Client : IClient {
-  public event EventHandler<NovelCraft.Sdk.Messages.IMessage>? AfterMessageReceiveEvent;
+  public event EventHandler<NovelCraft.Utilities.Messages.IMessage>? AfterMessageReceiveEvent;
 
 
   private ClientWebSocket _clientWebSocket = new();
@@ -30,7 +30,7 @@ internal class Client : IClient {
   }
 
 
-  public void Send(NovelCraft.Sdk.Messages.IMessage message) {
+  public void Send(NovelCraft.Utilities.Messages.IMessage message) {
     if (this._clientWebSocket.State == WebSocketState.Connecting) {
       this._clientWebSocket.SendAsync(this.GetBuffer(message.Json.ToJsonString()), WebSocketMessageType.Text, false, CancellationToken.None);
     }
