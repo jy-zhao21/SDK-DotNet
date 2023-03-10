@@ -43,7 +43,7 @@ internal class Client : IClient {
 
 
   public void Send(IMessage message) {
-    _clientWebSocket.SendAsync(this.GetBuffer(message.Json.ToJsonString()), WebSocketMessageType.Text, false, CancellationToken.None);
+    _clientWebSocket.SendAsync(GetBuffer(message.Json.ToJsonString()), WebSocketMessageType.Text, true, CancellationToken.None);
   }
 
   /// <summary>Get buffer from a byte array</summary>
@@ -72,15 +72,29 @@ internal class Client : IClient {
 
     _lastMessageReceived = DateTime.Now;
 
-    string text = System.Text.Encoding.UTF8.GetString(_receiveBuffer);
+    // Counts the valid bytes in the buffer ('\0' is not valid)
+    int count = 0;
+    for (int i = 0; i < BufferSize; i++) {
+      if (_receiveBuffer[i] == 0) {
+        break;
+      }
+
+      count++;
+    }
+
+    string text = System.Text.Encoding.UTF8.GetString(_receiveBuffer[..count]);
     JsonNode? json = JsonNode.Parse(text);
     if (json is null) {
       _logger.Error($"Failed to parse message: {text}");
       return;
     }
 
-    IMessage message = Parser.Parse(json);
-    AfterMessageReceiveEvent?.Invoke(this, message);
+    try {
+      IMessage message = Parser.Parse(json);
+      AfterMessageReceiveEvent?.Invoke(this, message);
+    } catch (Exception e) {
+      _logger.Error($"Failed to parse message: {e.Message}");
+    }
   }
 
   private ClientWebSocket TryConnect() {

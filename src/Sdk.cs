@@ -7,7 +7,7 @@ namespace NovelCraft.Sdk;
 /// The SDK.
 /// </summary>
 public static partial class Sdk {
-  private const int TimerInterval = 1000;
+  private const int TimerInterval = 30000;
 
 
   /// <summary>
