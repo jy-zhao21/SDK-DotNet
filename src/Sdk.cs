@@ -137,7 +137,9 @@ public static partial class Sdk {
         break;
 
       case ServerGetPlayerInfoMessage msg:
-        // TODO
+        Agent = new Agent(_token ?? throw new InvalidOperationException("The SDK is not initialized."), msg.UniqueId,
+          new Position<decimal>(msg.Position.X, msg.Position.Y, msg.Position.Z),
+          new Orientation(msg.Orientation.Yaw, msg.Orientation.Pitch));
         break;
 
       case ServerGetTickMessage serverGetTickMessage:

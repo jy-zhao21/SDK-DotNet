@@ -81,7 +81,11 @@ internal class Inventory : IInventory {
       throw new IndexOutOfRangeException();
     }
 
-    // TODO
+    Sdk.Client?.Send(new ClientPerformMergeSlotsMessage() {
+      Token = Sdk.Agent?.Token ?? throw new InvalidOperationException(),
+      FromSlot = fromSlot,
+      ToSlot = toSlot
+    });
   }
 
   public void SwapSlots(int slot1, int slot2) {

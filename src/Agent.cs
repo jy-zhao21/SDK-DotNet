@@ -43,7 +43,15 @@ internal class Agent : Entity, IAgent {
 
 
   public void Attack(IAgent.InteractionKind kind) {
-    // TODO
+    Sdk.Client?.Send(new ClientPerformAttackMessage() {
+      Token = Token,
+      AttackKind = kind switch {
+        IAgent.InteractionKind.Click => ClientPerformAttackMessage.AttackType.AttackClick,
+        IAgent.InteractionKind.HoldStart => ClientPerformAttackMessage.AttackType.HoldStart,
+        IAgent.InteractionKind.HoldEnd => ClientPerformAttackMessage.AttackType.HoldEnd,
+        _ => throw new NotImplementedException()
+      }
+    });
   }
 
   public void Jump() {
@@ -53,7 +61,14 @@ internal class Agent : Entity, IAgent {
   }
 
   public void LookAt(IPosition<decimal> position) {
-    // TODO
+    Sdk.Client?.Send(new ClientPerformLookAtMessage() {
+      Token = Token,
+      LookAtPosition = new() {
+        X = position.X,
+        Y = position.Y,
+        Z = position.Z
+      }
+    });
   }
 
   public void SetMovement(IAgent.MovementKind? kind) {
