@@ -31,10 +31,10 @@ internal class Inventory : IInventory {
 
       _mainHandSlot = value;
 
-      ClientPerformSwitchMainHandSlotMessage message = new() {
+      Sdk.Client?.Send(new ClientPerformSwitchMainHandSlotMessage() {
         Token = Sdk.Agent?.Token ?? throw new InvalidOperationException(),
         NewMainHand = value
-      };
+      });
     }
   }
 
@@ -50,10 +50,10 @@ internal class Inventory : IInventory {
 
 
   public void Craft(List<int?> ingredients) {
-    ClientPerformCraftMessage message = new() {
+    Sdk.Client?.Send(new ClientPerformCraftMessage() {
       Token = Sdk.Agent?.Token ?? throw new InvalidOperationException(),
       ItemIdSequence = ingredients
-    };
+    });
   }
 
   public void DropItem(int slot, int count) {
@@ -61,7 +61,7 @@ internal class Inventory : IInventory {
       throw new IndexOutOfRangeException();
     }
 
-    ClientPerformDropItemMessage message = new() {
+    Sdk.Client?.Send(new ClientPerformDropItemMessage() {
       Token = Sdk.Agent?.Token ?? throw new InvalidOperationException(),
       DropItems = new() {
         new() {
@@ -69,7 +69,7 @@ internal class Inventory : IInventory {
           Count = count
         }
       }
-    };
+    });
   }
 
   public void MergeSlots(int fromSlot, int toSlot) {
@@ -93,10 +93,10 @@ internal class Inventory : IInventory {
       throw new IndexOutOfRangeException();
     }
 
-    ClientPerformSwapSlotsMessage message = new() {
+    Sdk.Client?.Send(new ClientPerformSwapSlotsMessage() {
       Token = Sdk.Agent?.Token ?? throw new InvalidOperationException(),
       SlotA = slot1,
       SlotB = slot2
-    };
+    });
   }
 }

@@ -24,6 +24,12 @@ internal class EntitySource : IEntitySource {
   private Dictionary<int, IEntity> _entityDictionary = new();
 
 
+  public List<IEntity> GetAllEntities()
+  {
+    return _entityDictionary.Values.ToList();
+  }
+
+
   IEnumerator<IEntity> IEnumerable<IEntity>.GetEnumerator()
   {
     return _entityDictionary.Values.GetEnumerator();

@@ -9,4 +9,11 @@ public interface IEntitySource : IEnumerable<IEntity> {
   /// </summary>
   /// <param name="uniqueId">The unique ID of the entity.</param>
   public IEntity? this[int uniqueId] { get; }
+
+
+  /// <summary>
+  /// Gets all entities.
+  /// </summary>
+  /// <returns>The list of all entities.</returns>
+  public List<IEntity> GetAllEntities();
 }

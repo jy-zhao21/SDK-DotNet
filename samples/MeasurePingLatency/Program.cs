@@ -1,16 +1,19 @@
 ﻿using NovelCraft.Sdk;
 
-Console.WriteLine("Enter the host:");
-var host = Console.ReadLine()?? "localhost";
+Console.Write("Enter the host: ");
+string host = Console.ReadLine()!;
 
-Console.WriteLine("Enter the port:");
-var port = int.Parse(Console.ReadLine() ?? "14514");
+Console.Write("Enter the port: ");
+int port = int.Parse(Console.ReadLine()!);
+
+Console.Write("Enter the token: ");
+string token = Console.ReadLine()!;
 
 Sdk.Initialize(new() {
   Host = host,
   Name = "Steve",
   Port = port,
-  Token = "0123456789abcdef"
+  Token = token
 });
 
 while (true) {

@@ -25,6 +25,8 @@ internal class BlockSource : IBlockSource {
     }
   }
 
+  public int Count => _sectionDictionary.Count * 16 * 16 * 16;
+
   private Dictionary<IPosition<int>, Section> _sectionDictionary = new();
 
 

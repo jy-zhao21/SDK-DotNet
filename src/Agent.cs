@@ -47,11 +47,9 @@ internal class Agent : Entity, IAgent {
   }
 
   public void Jump() {
-    ClientPerformJumpMessage message = new() {
+    Sdk.Client?.Send(new ClientPerformJumpMessage() {
       Token = Token
-    };
-
-    Sdk.Client?.Send(message);
+    });
   }
 
   public void LookAt(IPosition<decimal> position) {
@@ -59,11 +57,21 @@ internal class Agent : Entity, IAgent {
   }
 
   public void SetMovement(IAgent.MovementKind? kind) {
-    // TODO
+    Sdk.Client?.Send(new ClientPerformMoveMessage() {
+      Token = Token,
+      DirectionType = kind switch {
+        IAgent.MovementKind.Forward => ClientPerformMoveMessage.Direction.Forward,
+        IAgent.MovementKind.Backward => ClientPerformMoveMessage.Direction.Backward,
+        IAgent.MovementKind.Left => ClientPerformMoveMessage.Direction.Left,
+        IAgent.MovementKind.Right => ClientPerformMoveMessage.Direction.Right,
+        null => ClientPerformMoveMessage.Direction.Stop,
+        _ => throw new NotImplementedException()
+      }
+    });
   }
 
   public void Use(IAgent.InteractionKind kind) {
-    ClientPerformUseMessage message = new() {
+    Sdk.Client?.Send(new ClientPerformUseMessage() {
       Token = Token,
       UseType = kind switch {
         IAgent.InteractionKind.Click => ClientPerformUseMessage.UseKind.UseClick,
@@ -71,8 +79,6 @@ internal class Agent : Entity, IAgent {
         IAgent.InteractionKind.HoldEnd => ClientPerformUseMessage.UseKind.UseEnd,
         _ => throw new NotImplementedException()
       }
-    };
-
-    Sdk.Client?.Send(message);
+    });
   }
 }

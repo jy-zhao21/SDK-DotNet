@@ -8,4 +8,9 @@ public interface IBlockSource {
   /// Gets the block at the specified position.
   /// </summary>
   IBlock? this[IPosition<int> position] { get; }
+
+  /// <summary>
+  /// Gets the count of blocks loaded.
+  /// </summary>
+  int Count { get; }
 }
