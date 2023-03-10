@@ -7,7 +7,8 @@ namespace NovelCraft.Sdk;
 /// The SDK.
 /// </summary>
 public static partial class Sdk {
-  private const int TimerInterval = 30000;
+  private const int GetInfoInterval = 30000;
+  private const int PingInterval = 1000;
 
 
   /// <summary>
@@ -36,6 +37,11 @@ public static partial class Sdk {
   public static ILogger Logger { get; } = new Logger("User");
 
   /// <summary>
+  /// Gets the latency between the client and the server.
+  /// </summary>
+  public static TimeSpan? Latency { get; private set; } = null;
+
+  /// <summary>
   /// Gets current tick.
   /// </summary>
   public static int? Tick {
@@ -62,7 +68,9 @@ public static partial class Sdk {
 
   internal static ILogger _sdkLogger { get; } = new Logger("SDK");
   private static (int LastTick, DateTime LastTickTime)? _lastTickInfo = null;
-  private static System.Timers.Timer _timer = new(TimerInterval);
+  private static DateTime? _lastPingSentTime = null;
+  private static System.Timers.Timer _getInfoTimer = new(GetInfoInterval);
+  private static System.Timers.Timer _pingTimer = new(PingInterval);
   private static string? _token = null;
 
 
@@ -79,14 +87,30 @@ public static partial class Sdk {
     Client = new Client(config.Host, config.Port);
     Client.AfterMessageReceiveEvent += OnAfterMessageReceiveEvent;
 
-    // Initialize the timer.
-    _timer.Elapsed += (sender, e) => OnTick();
-    OnTick(); // Manually call the tick event to get information right away.
-    _timer.Start();
+    // Manually call the tick event to get information right away.
+    OnTick();
+
+    // Initialize the timers.
+    _getInfoTimer.Elapsed += (sender, e) => OnTick();
+    _getInfoTimer.Start();
+
+    _pingTimer.Elapsed += (sender, e) => {
+      Client?.Send(new ClientPingMessage() {
+        Token = _token ?? throw new InvalidOperationException("The SDK is not initialized.")
+      });
+      _lastPingSentTime = DateTime.Now;
+    };
+    _pingTimer.Start();
   }
 
   private static void OnAfterMessageReceiveEvent(object? sender, IMessage message) {
     switch (message) {
+      case ServerPongMessage:
+        if (_lastPingSentTime is not null) {
+          Latency = DateTime.Now - _lastPingSentTime;
+        }
+        break;
+
       case ErrorMessage msg:
         _sdkLogger.Error($"The server returned an error: {msg.Message} ({msg.Code})");
         break;

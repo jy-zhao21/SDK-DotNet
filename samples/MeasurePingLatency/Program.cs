@@ -8,8 +8,9 @@ Sdk.Initialize(new() {
 });
 
 while (true) {
-  Sdk.Logger.Info($"TPS: {Sdk.TicksPerSecond}");
-  Sdk.Logger.Info($"Tick: {Sdk.Tick}");
+  if (Sdk.Latency is not null) {
+    Sdk.Logger.Info($"Latency: {Sdk.Latency?.TotalMilliseconds}ms");
+  }
   
   // Sleep for 1 second
   Thread.Sleep(1000);

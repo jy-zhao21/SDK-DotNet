@@ -10,14 +10,17 @@ internal class Client : IClient {
 
 
   private const int BufferSize = 1048576;
-  private const int MaxIdleTime = 10000;
 
+
+  /// <summary>
+  /// Gets the latency between the client and the server.
+  /// </summary>
+  public decimal Latency { get; private set; }
 
   private ClientWebSocket _clientWebSocket;
-  private DateTime _lastMessageReceived = DateTime.Now;
+  private DateTime _lastPingSent = DateTime.Now;
   private ILogger _logger = new Logger("SDK.Client");
   private byte[] _receiveBuffer = new byte[BufferSize];
-  private System.Timers.Timer _timer = new(MaxIdleTime);
   private Uri _uri;
 
 
@@ -31,14 +34,6 @@ internal class Client : IClient {
         ReceiveMessage();
       }
     });
-
-    _timer.Elapsed += (sender, e) => {
-      if ((DateTime.Now - _lastMessageReceived).TotalMilliseconds > MaxIdleTime) {
-        _logger.Info("Idle time exceeded, reconnecting...");
-        _clientWebSocket = TryConnect();
-      }
-    };
-    _timer.Start();
   }
 
 
@@ -64,13 +59,15 @@ internal class Client : IClient {
     try {
       WebSocketReceiveResult result = _clientWebSocket.ReceiveAsync(new ArraySegment<byte>(_receiveBuffer), CancellationToken.None).Result;
 
+      if (result.MessageType == WebSocketMessageType.Close) {
+        throw new Exception("Server closed connection");
+      }
+
     } catch (Exception e) {
       _logger.Error($"Failed to receive message: {e.Message}");
       _clientWebSocket = TryConnect();
       return;
     }
-
-    _lastMessageReceived = DateTime.Now;
 
     // Counts the valid bytes in the buffer ('\0' is not valid)
     int count = 0;
@@ -82,15 +79,10 @@ internal class Client : IClient {
       count++;
     }
 
-    string text = System.Text.Encoding.UTF8.GetString(_receiveBuffer[..count]);
-    JsonNode? json = JsonNode.Parse(text);
-    if (json is null) {
-      _logger.Error($"Failed to parse message: {text}");
-      return;
-    }
-
     try {
-      IMessage message = Parser.Parse(json);
+      IMessage message = Parser.Parse(JsonNode.Parse(
+        System.Text.Encoding.UTF8.GetString(_receiveBuffer[..count]))!);
+
       AfterMessageReceiveEvent?.Invoke(this, message);
     } catch (Exception e) {
       _logger.Error($"Failed to parse message: {e.Message}");
