@@ -1,9 +1,15 @@
 ﻿using NovelCraft.Sdk;
 
+Console.WriteLine("Enter the host:");
+var host = Console.ReadLine()?? "localhost";
+
+Console.WriteLine("Enter the port:");
+var port = int.Parse(Console.ReadLine() ?? "14514");
+
 Sdk.Initialize(new() {
-  Host = "localhost",
+  Host = host,
   Name = "Steve",
-  Port = 14514,
+  Port = port,
   Token = "0123456789abcdef"
 });
 
