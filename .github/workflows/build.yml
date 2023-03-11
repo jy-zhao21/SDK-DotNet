@@ -1,0 +1,96 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+  release:
+    types: 
+      - released
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        runtime:
+          - win-x64
+          - win-x86
+          - win-arm64
+          - linux-x64
+          - linux-musl-x64
+          - linux-arm
+          - linux-arm64
+          - osx-x64
+
+    steps:
+      - name: Get version if release
+        if: github.event_name == 'release'
+        run: echo "VERSION=${{ github.ref_name }}" | sed 's/=v/=/' >> $GITHUB_ENV
+
+      - name: Set default version if not release
+        if: github.event_name != 'release'
+        run: echo "VERSION=0.0.0" >> $GITHUB_ENV
+
+      - name: Checkout the repository
+        uses: actions/checkout@v3
+
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: 7.0.x
+
+      - name: Build the program
+        run: |
+          dotnet publish src -c Release -o build --sc false -r ${{ matrix.runtime }} \
+            -p:DebugType=none
+
+      - name: Copy essential files
+        run: |
+          cp CHANGELOG.md LICENSE README.md build
+          cp -r assets/* build
+
+      - name: Upload the artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: novelcraft-sdk-dotnet-${{ env.VERSION }}-${{ matrix.runtime }}
+          path: build
+
+  upload-to-release:
+    name: Upload to release
+    needs: 
+      - build
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+    steps:
+      - name: Get version
+        run: echo "VERSION=${{ github.ref_name }}" | sed 's/=v/=/' >> $GITHUB_ENV
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+
+      - name: Pack artifacts
+        run: |
+          zip -9r novelcraft-sdk-dotnet-${{ env.VERSION }}-win-x64.zip novelcraft-sdk-dotnet-${{ env.VERSION }}-win-x64
+          zip -9r novelcraft-sdk-dotnet-${{ env.VERSION }}-win-x86.zip novelcraft-sdk-dotnet-${{ env.VERSION }}-win-x86
+          zip -9r novelcraft-sdk-dotnet-${{ env.VERSION }}-win-arm64.zip novelcraft-sdk-dotnet-${{ env.VERSION }}-win-arm64
+          tar -zcf novelcraft-sdk-dotnet-${{ env.VERSION }}-linux-x64.tar.gz novelcraft-sdk-dotnet-${{ env.VERSION }}-linux-x64
+          tar -zcf novelcraft-sdk-dotnet-${{ env.VERSION }}-linux-musl-x64.tar.gz novelcraft-sdk-dotnet-${{ env.VERSION }}-linux-musl-x64
+          tar -zcf novelcraft-sdk-dotnet-${{ env.VERSION }}-linux-arm.tar.gz novelcraft-sdk-dotnet-${{ env.VERSION }}-linux-arm
+          tar -zcf novelcraft-sdk-dotnet-${{ env.VERSION }}-linux-arm64.tar.gz novelcraft-sdk-dotnet-${{ env.VERSION }}-linux-arm64
+          tar -zcf novelcraft-sdk-dotnet-${{ env.VERSION }}-osx-x64.tar.gz novelcraft-sdk-dotnet-${{ env.VERSION }}-osx-x64
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v1
+        with:
+          files: |
+            novelcraft-sdk-dotnet-${{ env.VERSION }}-win-x64.zip
+            novelcraft-sdk-dotnet-${{ env.VERSION }}-win-x86.zip
+            novelcraft-sdk-dotnet-${{ env.VERSION }}-win-arm64.zip
+            novelcraft-sdk-dotnet-${{ env.VERSION }}-linux-x64.tar.gz
+            novelcraft-sdk-dotnet-${{ env.VERSION }}-linux-musl-x64.tar.gz
+            novelcraft-sdk-dotnet-${{ env.VERSION }}-linux-arm.tar.gz
+            novelcraft-sdk-dotnet-${{ env.VERSION }}-linux-arm64.tar.gz
+            novelcraft-sdk-dotnet-${{ env.VERSION }}-osx-x64.tar.gz
