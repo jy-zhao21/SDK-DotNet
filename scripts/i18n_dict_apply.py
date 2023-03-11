@@ -40,5 +40,13 @@ def main():
         with open(os.path.join(script_path, '..', 'README.md'), 'w', encoding='utf-8') as f:
             f.writelines(lines)
 
+    # Overwrite Doxyfile with Doxyfile.<lang>
+    if os.path.exists(os.path.join(script_path, '..', f'Doxyfile.{args.lang}')):
+        with open(os.path.join(script_path, '..', f'Doxyfile.{args.lang}'), 'r', encoding='utf-8') as f:
+            lines = f.readlines()
+
+        with open(os.path.join(script_path, '..', 'Doxyfile'), 'w', encoding='utf-8') as f:
+            f.writelines(lines)
+
 if __name__ == '__main__':
     main()
