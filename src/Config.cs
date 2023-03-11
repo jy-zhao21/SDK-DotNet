@@ -15,12 +15,6 @@ public record Config {
   public required string Host { get; init; }
 
   /// <summary>
-  /// The name of the client.
-  /// </summary>
-  [JsonPropertyName("name")]
-  public required string Name { get; init; }
-
-  /// <summary>
   /// The port of the server.
   /// </summary>
   [JsonPropertyName("port")]

@@ -11,7 +11,6 @@ string token = Console.ReadLine()!;
 
 Sdk.Initialize(new() {
   Host = host,
-  Name = "Steve",
   Port = port,
   Token = token
 });
