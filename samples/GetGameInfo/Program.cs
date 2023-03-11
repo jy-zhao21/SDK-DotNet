@@ -33,7 +33,8 @@ while (true) {
   }
 
   if (Sdk.Entities is not null) {
-    Sdk.Logger.Info($"All entities: {Sdk.Entities.GetAllEntities().Select(e => e.UniqueId)}");
+    string entities = string.Join(", ", Sdk.Entities.GetAllEntities().Select(e => e.UniqueId));
+    Sdk.Logger.Info($"All entities: {entities}");
   }
 
   if (Sdk.Tick is not null) {
@@ -41,7 +42,15 @@ while (true) {
   }
 
   if (Sdk.TicksPerSecond is not null) {
-    Sdk.Logger.Info($"Ticks per second: {Sdk.TicksPerSecond}");
+    Sdk.Logger.Info($"Ticks per second: {Sdk.TicksPerSecond:0.00}");
+  }
+
+  if (Sdk.Latency is not null) {
+    Sdk.Logger.Info($"Latency: {Sdk.Latency?.TotalMilliseconds:0.00}ms");
+  }
+
+  if (Sdk.Client is not null) {
+    Sdk.Logger.Info($"Bandwidth: {Sdk.Client.BandWidth:0.00} Mbps");
   }
 
   // Sleep for 1 second

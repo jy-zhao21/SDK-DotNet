@@ -9,16 +9,22 @@ internal class Client : IClient {
   public event EventHandler<IMessage>? AfterMessageReceiveEvent;
 
 
-  private const int BufferSize = 1048576;
+  private const int BufferSize = 134217728;
+  private const int ByteCountPeriod = 1000;
 
+  /// <summary>
+  /// Gets the bandwidth (in Mbps) between the client and the server.
+  /// </summary>
+  public decimal BandWidth { get; private set; } = 0;
 
   /// <summary>
   /// Gets the latency between the client and the server.
   /// </summary>
   public decimal Latency { get; private set; }
 
+  private int _byteCountInThisPeriod = 0;
+  private System.Timers.Timer _byteCountTimer;
   private ClientWebSocket _clientWebSocket;
-  private DateTime _lastPingSent = DateTime.Now;
   private ILogger _logger = new Logger("SDK.Client");
   private byte[] _receiveBuffer = new byte[BufferSize];
   private Uri _uri;
@@ -29,6 +35,13 @@ internal class Client : IClient {
     _clientWebSocket = TryConnect();
     _logger.Info("Connected to server");
 
+    _byteCountTimer = new System.Timers.Timer(ByteCountPeriod);
+    _byteCountTimer.Elapsed += (sender, e) => {
+      BandWidth = BandWidth * 0.5m + (decimal)_byteCountInThisPeriod * 8 / 1e3m / ByteCountPeriod * 0.5m;
+      _byteCountInThisPeriod = 0;
+    };
+    _byteCountTimer.Start();
+
     Task.Run(() => {
       while (true) {
         ReceiveMessage();
@@ -38,7 +51,7 @@ internal class Client : IClient {
 
 
   public void Send(IMessage message) {
-    _clientWebSocket.SendAsync(GetBuffer(message.Json.ToJsonString()), WebSocketMessageType.Text, true, CancellationToken.None);
+    _clientWebSocket.SendAsync(GetBuffer(message.JsonString), WebSocketMessageType.Text, true, CancellationToken.None);
   }
 
   /// <summary>Get buffer from a byte array</summary>
@@ -56,6 +69,8 @@ internal class Client : IClient {
   }
 
   private void ReceiveMessage() {
+    int count = 0;
+
     try {
       WebSocketReceiveResult result = _clientWebSocket.ReceiveAsync(new ArraySegment<byte>(_receiveBuffer), CancellationToken.None).Result;
 
@@ -63,29 +78,28 @@ internal class Client : IClient {
         throw new Exception("Server closed connection");
       }
 
+      count = result.Count;
+
     } catch (Exception e) {
       _logger.Error($"Failed to receive message: {e.Message}");
       _clientWebSocket = TryConnect();
       return;
     }
 
-    // Counts the valid bytes in the buffer ('\0' is not valid)
-    int count = 0;
-    for (int i = 0; i < BufferSize; i++) {
-      if (_receiveBuffer[i] == 0) {
-        break;
-      }
+    _byteCountInThisPeriod += count;
 
-      count++;
+    if (count >= _receiveBuffer.Length) {
+      _logger.Error("Buffer overflow");
+      return;
     }
 
     try {
-      IMessage message = Parser.Parse(JsonNode.Parse(
-        System.Text.Encoding.UTF8.GetString(_receiveBuffer[..count]))!);
+      IMessage message = Parser.Parse(
+        System.Text.Encoding.UTF8.GetString(_receiveBuffer[..count]));
 
       AfterMessageReceiveEvent?.Invoke(this, message);
     } catch (Exception e) {
-      _logger.Error($"Failed to parse message: {e.Message}");
+      _logger.Error($"Failed to parse message: {e.Message}: {System.Text.Encoding.UTF8.GetString(_receiveBuffer[..Math.Min(1024, count)])}...");
     }
   }
 

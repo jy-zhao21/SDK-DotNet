@@ -7,7 +7,7 @@ namespace NovelCraft.Sdk;
 /// The SDK.
 /// </summary>
 public static partial class Sdk {
-  private const int GetInfoInterval = 30000;
+  private const int GetInfoInterval = 10000;
   private const int PingInterval = 1000;
 
 
@@ -55,7 +55,7 @@ public static partial class Sdk {
       }
 
       var timeSinceLastTick = DateTime.Now - _lastTickInfo.Value.LastTickTime;
-      var ticksSinceLastTick = (int)(timeSinceLastTick.TotalSeconds * TicksPerSecond);
+      var ticksSinceLastTick = (int)((decimal)timeSinceLastTick.TotalSeconds * TicksPerSecond);
 
       return _lastTickInfo.Value.LastTick + ticksSinceLastTick;
     }
@@ -64,11 +64,10 @@ public static partial class Sdk {
   /// <summary>
   /// Gets the number of ticks per second.
   /// </summary>
-  public static int? TicksPerSecond { get; private set; } = null;
+  public static decimal? TicksPerSecond { get; private set; } = null;
 
   internal static ILogger _sdkLogger { get; } = new Logger("SDK");
   private static (int LastTick, DateTime LastTickTime)? _lastTickInfo = null;
-  private static DateTime? _lastPingSentTime = null;
   private static System.Timers.Timer _getInfoTimer = new(GetInfoInterval);
   private static System.Timers.Timer _pingTimer = new(PingInterval);
   private static string? _token = null;
@@ -96,19 +95,17 @@ public static partial class Sdk {
 
     _pingTimer.Elapsed += (sender, e) => {
       Client?.Send(new ClientPingMessage() {
-        Token = _token ?? throw new InvalidOperationException("The SDK is not initialized.")
+        Token = _token ?? throw new InvalidOperationException("The SDK is not initialized."),
+        SentTime = (decimal)DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond
       });
-      _lastPingSentTime = DateTime.Now;
     };
     _pingTimer.Start();
   }
 
   private static void OnAfterMessageReceiveEvent(object? sender, IMessage message) {
     switch (message) {
-      case ServerPongMessage:
-        if (_lastPingSentTime is not null) {
-          Latency = DateTime.Now - _lastPingSentTime;
-        }
+      case ServerPongMessage msg:
+        Latency = TimeSpan.FromMilliseconds((double)(DateTime.Now.Ticks - (long)(msg.SentTime * TimeSpan.TicksPerMillisecond)) / TimeSpan.TicksPerMillisecond);
         break;
 
       case ErrorMessage msg:
@@ -150,8 +147,6 @@ public static partial class Sdk {
   }
 
   private static void OnTick() {
-    _sdkLogger.Info("Getting game information...");
-
     string token = _token ?? throw new InvalidOperationException("The SDK is not initialized.");
 
     Client?.Send(new ClientGetTickMessage() {

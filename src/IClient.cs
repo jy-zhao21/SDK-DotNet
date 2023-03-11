@@ -10,6 +10,9 @@ public interface IClient {
   public event EventHandler<NovelCraft.Utilities.Messages.IMessage>? AfterMessageReceiveEvent;
 
 
+  public decimal BandWidth { get; }
+
+
   /// <summary>
   /// Sends a message to the server.
   /// </summary>
