@@ -1,0 +1,470 @@
+[
+    {
+        "key": "Gets the latency between the client and the server.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Get buffer from a byte array",
+        "prefix": "<summary>",
+        "suffix": "</summary>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "byte array",
+        "prefix": "<param name=\"arr\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": " ArraySegment<byte> ",
+        "prefix": "<returns>",
+        "suffix": "</returns>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Get buffer from a string",
+        "prefix": "<summary>",
+        "suffix": "</summary>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "string",
+        "prefix": "<param name=\"str\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": " ArraySegment<byte> ",
+        "prefix": "<returns>",
+        "suffix": "</returns>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Represents the configuration of the SDK.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The IP address or host name of the server.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The name of the client.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The port of the server.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The token of the client.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the JSON representation of the configuration.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "An agent is a player that can be controlled by an AI.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the inventory of the agent.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets or sets the movement of the agent.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Null means stopped.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the token of the agent.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Performs an attack.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The kind of attack to perform.",
+        "prefix": "<param name=\"kind\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Performs a jump.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Makes the agent look at a position.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The position to look at.",
+        "prefix": "<param name=\"position\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Sets the movement of the agent.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The kind of movement to perform. Null means stopped.",
+        "prefix": "<param name=\"kind\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Performs a use action.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The kind of use action to perform.",
+        "prefix": "<param name=\"kind\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the position of the block.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the type of the block.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Represents a collection of blocks.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the block at the specified position.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the count of blocks loaded.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Represents common interfaces for all communication clients.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Occurs when a message is received from the server.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Sends a message to the server.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The message to be sent.",
+        "prefix": "<param name=\"message\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the orientation of the entity.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the position of the entity.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the type of the entity.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the unique ID of the entity.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Represents a collection of entities.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the entity with the unique ID.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The unique ID of the entity.",
+        "prefix": "<param name=\"uniqueId\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets all entities.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The list of all entities.",
+        "prefix": "<returns>",
+        "suffix": "</returns>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the item in the specified slot.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The slot to get the item from.",
+        "prefix": "<param name=\"index\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The item in the specified slot.",
+        "prefix": "<returns>",
+        "suffix": "</returns>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the number of slots in the hot bar.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets or sets the slot that the main hand is currently in.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The value of this property must be in the range [0, HotBarSize).",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the number of slots in the inventory.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Crafts items from the specified ingredients.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The ingredients to use in the crafting recipe.",
+        "prefix": "<param name=\"ingredients\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Drops items from a slot into the world.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The slot to drop items from.",
+        "prefix": "<param name=\"slot\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The number of items to drop.",
+        "prefix": "<param name=\"count\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Merges items from two slots into one slot.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The slot to take items from.",
+        "prefix": "<param name=\"fromSlot\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The slot to put items into.",
+        "prefix": "<param name=\"toSlot\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "If the items in the two slots are not the same type, nothing happens.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "If the number of items in the two slots is greater than the maximum stack size,",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "toSlot will be filled to the maximum stack size and the remaining items will be",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "left in fromSlot.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Swaps the contents of two slots.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the count of the item stack.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the type of the item stack.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The SDK.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the agent representing the player controlled by the user.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the block collection.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the client for sending and receiving messages directly to or from the server.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the list of all entities in the world.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the logger.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the latency between the client and the server.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets current tick.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the number of ticks per second.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Initializes the SDK.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The configuration of the SDK.",
+        "prefix": "<param name=\"config\">",
+        "suffix": "</param>",
+        "zh": "<no translation>"
+    }
+]
