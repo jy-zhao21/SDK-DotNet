@@ -466,5 +466,11 @@
         "prefix": "<param name=\"config\">",
         "suffix": "</param>",
         "zh": "<no translation>"
+    },
+    {
+        "key": "Represents a block in the world.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
     }
 ]

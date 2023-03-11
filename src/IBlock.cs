@@ -1,5 +1,8 @@
 namespace NovelCraft.Sdk;
 
+/// <summary>
+/// Represents a block in the world.
+/// </summary>
 public interface IBlock {
   /// <summary>
   /// Gets the position of the block.
