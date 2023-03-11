@@ -50,7 +50,11 @@ SDK提供了一些函数来获取游戏信息。你可以使用这些函数来�
 using NovelCraft.Sdk;
 
 // 获取位置(0, 0, 0)的块。
-Position<int> position = new (0, 0, 0);
+var position = new {
+  X = 0,
+  Y = 0,
+  Z = 0
+} as IPosition<int>;
 var block = Sdk.Blocks[position];
 
 // 获取ID为114的实体。

@@ -1,6 +1,6 @@
 namespace NovelCraft.Sdk;
 
-public struct Position<T> : IPosition<T> {
+internal struct Position<T> : IPosition<T> {
   public T X { get; set; }
   public T Y { get; set; }
   public T Z { get; set; }

@@ -50,7 +50,11 @@ Here is an example:
 using NovelCraft.Sdk;
 
 // Get the block at position (0, 0, 0).
-Position<int> position = new (0, 0, 0);
+var position = new {
+  X = 0,
+  Y = 0,
+  Z = 0
+} as IPosition<int>;
 var block = Sdk.Blocks[position];
 
 // Get the entity with ID 114.

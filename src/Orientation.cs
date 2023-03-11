@@ -1,6 +1,6 @@
 namespace NovelCraft.Sdk;
 
-public struct Orientation: IOrientation {
+internal struct Orientation: IOrientation {
   public decimal Yaw { get; set; }
   public decimal Pitch { get; set; }
 
