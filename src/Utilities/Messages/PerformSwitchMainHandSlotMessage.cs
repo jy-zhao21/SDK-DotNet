@@ -9,7 +9,7 @@ public record ClientPerformSwitchMainHandSlotMessage : MessageBase, IClientMessa
   public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
 
   [JsonPropertyName("type")]
-  public override IMessage.MessageKind Type => IMessage.MessageKind.PerformSwapSlots;
+  public override IMessage.MessageKind Type => IMessage.MessageKind.PerformSwitchMainHandSlot;
 
   [JsonPropertyName("token")]
   public required string Token { get; init; }

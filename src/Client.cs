@@ -1,5 +1,5 @@
+using System.Collections.Concurrent;
 using System.Net.WebSockets;
-using System.Text.Json.Nodes;
 using NovelCraft.Utilities.Logger;
 using NovelCraft.Utilities.Messages;
 
@@ -11,6 +11,8 @@ internal class Client : IClient {
 
   private const int BufferSize = 134217728;
   private const int ByteCountPeriod = 1000;
+  private const int MessageQueueCapacity = 100;
+  private const int MessageSendPeriod = 10;
 
   /// <summary>
   /// Gets the bandwidth (in Mbps) between the client and the server.
@@ -26,6 +28,7 @@ internal class Client : IClient {
   private System.Timers.Timer _byteCountTimer;
   private ClientWebSocket _clientWebSocket;
   private ILogger _logger = new Logger("SDK.Client");
+  private ConcurrentQueue<IMessage> _messageQueue = new();
   private byte[] _receiveBuffer = new byte[BufferSize];
   private Uri _uri;
 
@@ -47,11 +50,25 @@ internal class Client : IClient {
         ReceiveMessage();
       }
     });
+
+    Task.Run(() => {
+      while (true) {
+        Thread.Sleep(MessageSendPeriod);
+        if (_messageQueue.TryDequeue(out IMessage? message)) {
+          _clientWebSocket.SendAsync(GetBuffer(message.JsonString), WebSocketMessageType.Text, true, CancellationToken.None);
+        }
+      }
+    });
   }
 
 
   public void Send(IMessage message) {
-    _clientWebSocket.SendAsync(GetBuffer(message.JsonString), WebSocketMessageType.Text, true, CancellationToken.None);
+    if (_messageQueue.Count >= MessageQueueCapacity) {
+      _logger.Error("Message queue overflow");
+      return;
+    }
+
+    _messageQueue.Enqueue(message);
   }
 
   /// <summary>Get buffer from a byte array</summary>
