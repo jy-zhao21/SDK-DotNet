@@ -14,32 +14,32 @@ public static partial class Sdk {
   /// <summary>
   /// Gets the agent representing the player controlled by the user.
   /// </summary>
-  public static IAgent? Agent { get; private set; } = null;
+  public static IAgent? Agent => _agent;
 
   /// <summary>
   /// Gets the block collection.
   /// </summary>
-  public static IBlockSource? Blocks { get; private set; } = null;
+  public static IBlockSource? Blocks => _blockSource;
 
   /// <summary>
   /// Gets the client for sending and receiving messages directly to or from the server.
   /// </summary>
-  public static IClient? Client { get; private set; } = null;
+  public static IClient? Client => _client;
 
   /// <summary>
   /// Gets the list of all entities in the world.
   /// </summary>
-  public static IEntitySource? Entities { get; private set; } = null;
+  public static IEntitySource? Entities => _entitySource;
 
   /// <summary>
   /// Gets the logger.
   /// </summary>
-  public static ILogger Logger { get; } = new Logger("User");
+  public static ILogger Logger => _userLogger;
 
   /// <summary>
   /// Gets the latency between the client and the server.
   /// </summary>
-  public static TimeSpan? Latency { get; private set; } = null;
+  public static TimeSpan? Latency => _latency;
 
   /// <summary>
   /// Gets current tick.
@@ -66,7 +66,14 @@ public static partial class Sdk {
   /// </summary>
   public static decimal? TicksPerSecond { get; private set; } = null;
 
+  internal static Agent? _agent = null;
+  internal static BlockSource? _blockSource = null;
+  internal static Client? _client = null;
+  internal static EntitySource? _entitySource = null;
+  internal static TimeSpan? _latency = null;
   internal static ILogger _sdkLogger { get; } = new Logger("SDK");
+  internal static ILogger _userLogger { get; } = new Logger("User");
+
   private static (int LastTick, DateTime LastTickTime)? _lastTickInfo = null;
   private static System.Timers.Timer _getInfoTimer = new(GetInfoInterval);
   private static System.Timers.Timer _pingTimer = new(PingInterval);
@@ -83,8 +90,8 @@ public static partial class Sdk {
     _token = config.Token;
 
     // Initialize the client
-    Client = new Client(config.Host, config.Port);
-    Client.AfterMessageReceiveEvent += OnAfterMessageReceiveEvent;
+    _client = new Client(config.Host, config.Port);
+    _client.AfterMessageReceiveEvent += OnAfterMessageReceiveEvent;
 
     // Manually call the tick event to get information right away.
     OnTick();
@@ -95,7 +102,7 @@ public static partial class Sdk {
 
     _pingTimer.Elapsed += (sender, e) => {
       Client?.Send(new ClientPingMessage() {
-        Token = _token ?? throw new InvalidOperationException("The SDK is not initialized."),
+        Token = _token!,
         SentTime = (decimal)DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond
       });
     };
@@ -105,44 +112,87 @@ public static partial class Sdk {
   private static void OnAfterMessageReceiveEvent(object? sender, IMessage message) {
     switch (message) {
       case ServerPongMessage msg:
-        Latency = TimeSpan.FromMilliseconds((double)(DateTime.Now.Ticks - (long)(msg.SentTime * TimeSpan.TicksPerMillisecond)) / TimeSpan.TicksPerMillisecond);
+        _latency = TimeSpan.FromMilliseconds((double)(DateTime.Now.Ticks - (long)(msg.SentTime * TimeSpan.TicksPerMillisecond)) / TimeSpan.TicksPerMillisecond);
         break;
+
 
       case ErrorMessage msg:
         _sdkLogger.Error($"The server returned an error: {msg.Message} ({msg.Code})");
         break;
 
+
       case ServerGetBlocksAndEntitiesMessage msg:
-        BlockSource blocks = new();
+        // Update the block source.
+        if (_blockSource is null) {
+          _blockSource = new BlockSource();
+        }
+
+        _blockSource.Clear();
         foreach (var section in msg.Sections) {
-          blocks.AddSection(
+          _blockSource.AddSection(
             new Section(
               new Position<int>(section.Position.X, section.Position.Y, section.Position.Z),
               section.Blocks
             )
           );
         }
-        Blocks = blocks;
 
-        EntitySource entities = new();
+        // Update the entity source.
+        if (_entitySource is null) {
+          _entitySource = new EntitySource();
+        }
+
+        _entitySource.Clear();
         foreach (var entity in msg.Entities) {
-          entities[entity.UniqueId] = new Entity(entity.UniqueId, entity.TypeId,
+          _entitySource[entity.UniqueId] = new Entity(entity.UniqueId, entity.TypeId,
             new Position<decimal>(entity.Position.X, entity.Position.Y, entity.Position.Z),
             new Orientation(entity.Orientation.Yaw, entity.Orientation.Pitch));
         }
-        Entities = entities;
         break;
 
+
       case ServerGetPlayerInfoMessage msg:
-        Agent = new Agent(_token ?? throw new InvalidOperationException("The SDK is not initialized."), msg.UniqueId,
-          new Position<decimal>(msg.Position.X, msg.Position.Y, msg.Position.Z),
-          new Orientation(msg.Orientation.Yaw, msg.Orientation.Pitch));
+        if (_token is null) {
+          throw new InvalidOperationException("The token is null.");
+        }
+
+        if (_agent is null) {
+          _agent = new Agent(_token, msg.UniqueId,
+            new Position<decimal>() {
+              X = msg.Position.X,
+              Y = msg.Position.Y,
+              Z = msg.Position.Z
+            },
+            new Orientation() {
+              Yaw = msg.Orientation.Yaw,
+              Pitch = msg.Orientation.Pitch
+            });
+        }
+
+        if (msg.Inventory.Count != _agent.Inventory.Size) {
+          throw new InvalidOperationException("The inventory size of the agent is not equal to the inventory size of the server.");
+        }
+
+        if (msg.UniqueId != _agent.UniqueId) {
+          throw new InvalidOperationException("The unique ID of the agent is not equal to the unique ID of the server.");
+        }
+
+        _agent.Health = msg.Health;
+        _agent.Orientation = new Orientation(msg.Orientation.Yaw, msg.Orientation.Pitch);
+        _agent.Position = new Position<decimal>(msg.Position.X, msg.Position.Y, msg.Position.Z);
+        _agent._inventory.MainHandSlot = msg.MainHand;
+        for (int i = 0; i < msg.Inventory.Count; i++) {
+          var itemInfo = msg.Inventory[i];
+          _agent._inventory[i] = (itemInfo is null) ? null : new ItemStack(itemInfo.TypeId, itemInfo.Count);
+        }
         break;
+
 
       case ServerGetTickMessage serverGetTickMessage:
         _lastTickInfo = (serverGetTickMessage.Tick, DateTime.Now);
         TicksPerSecond = serverGetTickMessage.TicksPerSecond;
         break;
+
 
       case ServerAfterBlockChangeMessage msg:
         // To be tested
@@ -153,6 +203,7 @@ public static partial class Sdk {
           }
         }
         break;
+
 
       case ServerAfterEntityCreateMessage msg:
         if (Entities is not null) {
@@ -166,6 +217,8 @@ public static partial class Sdk {
           }
         }
         break;
+
+
       case ServerAfterEntityRemoveMessage msg:
         if (Entities is not null) {
           foreach (int removalId in msg.RemovalIdList) {
@@ -174,6 +227,8 @@ public static partial class Sdk {
           }
         }
         break;
+
+
       case ServerAfterEntityOrientationChangeMessage msg:
         if (Entities is not null) {
           foreach (var changeInfo in msg.ChangeList) {
@@ -184,6 +239,8 @@ public static partial class Sdk {
           }
         }
         break;
+
+
       case ServerAfterEntityPositionChangeMessage msg:
         if (Entities is not null) {
           foreach (var changeInfo in msg.ChangeList) {
@@ -195,6 +252,8 @@ public static partial class Sdk {
           }
         }
         break;
+
+
       case ServerAfterPlayerInventoryChangeMessage msg:
         // TO DO: Implement this case
         break;

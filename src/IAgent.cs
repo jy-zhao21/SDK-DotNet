@@ -8,6 +8,11 @@ public interface IAgent : IEntity {
   public enum MovementKind { Forward, Backward, Left, Right }
 
   /// <summary>
+  /// Gets the health of the olayer.
+  /// </summary>
+  public decimal Health { get; }
+
+  /// <summary>
   /// Gets the inventory of the agent.
   /// </summary>
   public IInventory Inventory { get; }

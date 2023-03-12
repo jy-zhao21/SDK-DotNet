@@ -5,6 +5,8 @@ namespace NovelCraft.Sdk;
 internal class Agent : Entity, IAgent {
   public IInventory Inventory => _inventory;
 
+  public decimal Health { get; set; } = 0;
+
   public IAgent.MovementKind? Movement {
     get => _movement;
     set {
@@ -32,7 +34,8 @@ internal class Agent : Entity, IAgent {
 
   public string Token { get; }
 
-  private Inventory _inventory = new();
+  internal Inventory _inventory = new();
+  
   private IAgent.MovementKind? _movement = null;
 
 

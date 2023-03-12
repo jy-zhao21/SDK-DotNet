@@ -34,6 +34,10 @@ internal class BlockSource : IBlockSource {
     _sectionDictionary[section.Position] = section;
   }
 
+  public void Clear() {
+    _sectionDictionary.Clear();
+  }
+
   public void RemoveSection(IPosition<int> position) {
     // Check if the position is valid.
     if (position.X % 16 != 0 || position.Y % 16 != 0 || position.Z % 16 != 0) {
