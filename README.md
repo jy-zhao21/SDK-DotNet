@@ -1,6 +1,6 @@
 # NovelCraft SDK for .NET
 
-If you would just like to browse the API documentation, you can do so [here](https://novelcraft.github.io/SDK-DotNet/en/annotated.html).
+If you would just like to browse the API documentation, you can do so [here](https://novelcraft.github.io/SDK-DotNet/en/classSdk.html) and [here](https://novelcraft.github.io/SDK-DotNet/en/annotated.html).
 
 ## Introduction
 
@@ -80,4 +80,4 @@ Sdk.Agent.LookAt(position);
 
 ## Next steps
 
-To learn more about NovelCraft SDK for .NET, you can read the API documentation. You can check out all APIs [here](https://novelcraft.github.io/SDK-DotNet/en/annotated.html). You can also check out the examples in the examples folder. You can run them to see how they work and modify them to suit your needs.
+To learn more about NovelCraft SDK for .NET, you can read the API documentation. You can learn the entrypoint [here](https://novelcraft.github.io/SDK-DotNet/en/classSdk.html) and check out all APIs [here](https://novelcraft.github.io/SDK-DotNet/en/annotated.html). You can also check out the examples in the examples folder. You can run them to see how they work and modify them to suit your needs.
