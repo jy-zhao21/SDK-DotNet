@@ -10,7 +10,19 @@ public class TestClientGetBlocksAndEntitiesMessage {
     {
       ""bound_to"": 0,
       ""type"": 300,
-      ""token"": ""test""
+      ""token"": ""test"",
+      ""request_section_list"": [
+        {
+          ""x"": 0,
+          ""y"": 0,
+          ""z"": 0
+        },
+        {
+          ""x"": 1,
+          ""y"": 1,
+          ""z"": 1
+        }
+      ]
     }";
 
     var json = JsonNode.Parse(jsonStr);
