@@ -24,19 +24,31 @@ internal class EntitySource : IEntitySource {
   private Dictionary<int, IEntity> _entityDictionary = new();
 
 
-  public List<IEntity> GetAllEntities()
-  {
+  public List<IEntity> GetAllEntities() {
     return _entityDictionary.Values.ToList();
   }
+  public void AddEntity(IEntity entity) {
+    if (_entityDictionary.ContainsKey(entity.UniqueId) == true) {
+      return;
+    }
+
+    _entityDictionary.Add(entity.UniqueId, entity);
+  }
 
 
-  IEnumerator<IEntity> IEnumerable<IEntity>.GetEnumerator()
-  {
+  public void RemoveEntity(int uniqueId) {
+    if (_entityDictionary.ContainsKey(uniqueId) == false) {
+      return;
+    }
+    _entityDictionary.Remove(uniqueId);
+  }
+
+  IEnumerator<IEntity> IEnumerable<IEntity>.GetEnumerator() {
     return _entityDictionary.Values.GetEnumerator();
   }
 
-  IEnumerator IEnumerable.GetEnumerator()
-  {
+  IEnumerator IEnumerable.GetEnumerator() {
     return _entityDictionary.Values.GetEnumerator();
   }
+
 }

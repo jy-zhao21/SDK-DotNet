@@ -143,6 +143,61 @@ public static partial class Sdk {
         _lastTickInfo = (serverGetTickMessage.Tick, DateTime.Now);
         TicksPerSecond = serverGetTickMessage.TicksPerSecond;
         break;
+
+      case ServerAfterBlockChangeMessage msg:
+        // To be tested
+        if (Blocks is not null) {
+          foreach (var blockChangeInfo in msg.ChangeList) {
+            Position<int> blockPosition = new Position<int>(blockChangeInfo.Position.X, blockChangeInfo.Position.Y, blockChangeInfo.Position.Z);
+            ((BlockSource)Blocks)[blockPosition] = new Block(blockChangeInfo.BlockTypeId, blockPosition);
+          }
+        }
+        break;
+
+      case ServerAfterEntityCreateMessage msg:
+        if (Entities is not null) {
+          foreach (var entityCreateInfo in msg.CreationList) {
+            EntitySource entitySource = (EntitySource)Entities;
+
+            // Have checked if the key exists in the function "AddEntity"
+            entitySource.AddEntity(new Entity(entityCreateInfo.UniqueId, entityCreateInfo.EntityTypeId,
+            new Position<decimal>(entityCreateInfo.Position.X, entityCreateInfo.Position.Y, entityCreateInfo.Position.Z),
+            new Orientation(entityCreateInfo.Orientation.Yaw, entityCreateInfo.Orientation.Pitch)));
+          }
+        }
+        break;
+      case ServerAfterEntityRemoveMessage msg:
+        if (Entities is not null) {
+          foreach (int removalId in msg.RemovalIdList) {
+            // Have checked if the key exists in the function "RemoveEntity"
+            ((EntitySource)Entities).RemoveEntity(removalId);
+          }
+        }
+        break;
+      case ServerAfterEntityOrientationChangeMessage msg:
+        if (Entities is not null) {
+          foreach (var changeInfo in msg.ChangeList) {
+            var entity = Entities[changeInfo.UniqueId];
+            if (entity is not null)
+              ((EntitySource)Entities)[changeInfo.UniqueId] = new Entity(entity.UniqueId, entity.TypeId, entity.Position,
+              new Orientation(changeInfo.Orientation.Yaw, changeInfo.Orientation.Pitch));
+          }
+        }
+        break;
+      case ServerAfterEntityPositionChangeMessage msg:
+        if (Entities is not null) {
+          foreach (var changeInfo in msg.ChangeList) {
+            var entity = Entities[changeInfo.UniqueId];
+            if (entity is not null)
+              ((EntitySource)Entities)[changeInfo.UniqueId] = new Entity(entity.UniqueId, entity.TypeId,
+              new Position<decimal>(changeInfo.Position.X, changeInfo.Position.Y, changeInfo.Position.Z),
+              entity.Orientation);
+          }
+        }
+        break;
+      case ServerAfterPlayerInventoryChangeMessage msg:
+        // TO DO: Implement this case
+        break;
     }
   }
 
