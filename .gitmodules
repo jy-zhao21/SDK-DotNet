@@ -1,3 +1,0 @@
-[submodule "third_party/NovelCraft.Server"]
-	path = third_party/NovelCraft.Server
-	url = https://github.com/NovelCraft/Server.git

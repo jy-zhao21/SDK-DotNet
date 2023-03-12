@@ -90,8 +90,6 @@ internal class Agent : Entity, IAgent {
       Token = Token,
       UseType = kind switch {
         IAgent.InteractionKind.Click => ClientPerformUseMessage.UseKind.UseClick,
-        IAgent.InteractionKind.HoldStart => ClientPerformUseMessage.UseKind.UseStart,
-        IAgent.InteractionKind.HoldEnd => ClientPerformUseMessage.UseKind.UseEnd,
         _ => throw new NotImplementedException()
       }
     });
