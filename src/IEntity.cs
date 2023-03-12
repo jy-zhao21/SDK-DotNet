@@ -1,5 +1,8 @@
 namespace NovelCraft.Sdk;
 
+/// <summary>
+/// Represents an entity in the game world.
+/// </summary>
 public interface IEntity {
   /// <summary>
   /// Gets the orientation of the entity.

@@ -1,5 +1,8 @@
 namespace NovelCraft.Sdk;
 
+/// <summary>
+/// Represents an inventory.
+/// </summary>
 public interface IInventory {
   /// <summary>
   /// Gets the item in the specified slot.

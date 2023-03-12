@@ -1,5 +1,8 @@
 namespace NovelCraft.Sdk;
 
+/// <summary>
+/// Represents an item stack.
+/// </summary>
 public interface IItemStack {
   /// <summary>
   /// Gets the count of the item stack.
