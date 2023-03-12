@@ -153,9 +153,23 @@ public static partial class Sdk {
       Token = token
     });
 
-    Client?.Send(new ClientGetBlocksAndEntitiesMessage() {
-      Token = token
-    });
+    if (Agent is not null) {
+      List<NovelCraft.Utilities.Messages.Position<int>> requestPositionList = (
+        from x in Enumerable.Range(-1, 3)
+        from y in Enumerable.Range(-1, 3)
+        from z in Enumerable.Range(-1, 3)
+        select new NovelCraft.Utilities.Messages.Position<int>() {
+          X = (int)(Agent.Position.X + x * 16),
+          Y = (int)(Agent.Position.Y + y * 16),
+          Z = (int)(Agent.Position.Z + z * 16)
+        }
+      ).ToList();
+
+      Client?.Send(new ClientGetBlocksAndEntitiesMessage() {
+        Token = token,
+        RequestSectionList = requestPositionList
+      });
+    }
 
     Client?.Send(new ClientGetPlayerInfoMessage() {
       Token = token
