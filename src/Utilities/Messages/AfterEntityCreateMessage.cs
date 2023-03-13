@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace NovelCraft.Utilities.Messages;
 
-public record ServerAfterEntityCreateMessage : MessageBase {
+internal record ServerAfterEntityCreateMessage : MessageBase {
   public record CreationType {
     [JsonPropertyName("entity_type_id")]
     public required int EntityTypeId { get; init; }

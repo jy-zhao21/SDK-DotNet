@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace NovelCraft.Utilities.Messages;
 
 
-public record ServerAfterEntityAttackMessage : MessageBase {
+internal record ServerAfterEntityAttackMessage : MessageBase {
   public record AttackType {
     public enum AttackKind { Click, HoldStart, HoldEnd }
 

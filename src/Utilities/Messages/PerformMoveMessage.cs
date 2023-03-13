@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 namespace NovelCraft.Utilities.Messages;
 
 
-public record ClientPerformMoveMessage : MessageBase, IClientMessage {
+internal record ClientPerformMoveMessage : MessageBase, IClientMessage {
   [JsonPropertyName("bound_to")]
   public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
 

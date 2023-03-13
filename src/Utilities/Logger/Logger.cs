@@ -5,7 +5,7 @@ namespace NovelCraft.Utilities.Logger;
 /// <summary>
 /// Logger class provides logging functionality.
 /// </summary>
-public class Logger : ILogger {
+internal class Logger : ILogger {
   #region Fields and properties
   private readonly string _loggingNamespace;
   #endregion

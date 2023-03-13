@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace NovelCraft.Utilities.Messages;
 
-public record ServerAfterEntityRemoveMessage : MessageBase {
+internal record ServerAfterEntityRemoveMessage : MessageBase {
   [JsonPropertyName("bound_to")]
   public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ClientBound;
 

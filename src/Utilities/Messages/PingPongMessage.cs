@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace NovelCraft.Utilities.Messages;
 
 
-public record ClientPingMessage : MessageBase, IClientMessage {
+internal record ClientPingMessage : MessageBase, IClientMessage {
   [JsonPropertyName("bound_to")]
   public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
 
@@ -17,7 +17,7 @@ public record ClientPingMessage : MessageBase, IClientMessage {
   public required decimal SentTime { get; init; }
 }
 
-public record ServerPongMessage : MessageBase {
+internal record ServerPongMessage : MessageBase {
   [JsonPropertyName("bound_to")]
   public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ClientBound;
 

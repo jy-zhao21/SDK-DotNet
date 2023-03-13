@@ -4,7 +4,7 @@ namespace NovelCraft.Utilities.Messages;
 
 
 
-public record ClientPerformSwitchMainHandSlotMessage : MessageBase, IClientMessage {
+internal record ClientPerformSwitchMainHandSlotMessage : MessageBase, IClientMessage {
   [JsonPropertyName("bound_to")]
   public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
 

@@ -4,15 +4,15 @@ Console.Write("Enter the host: ");
 string host = Console.ReadLine()!;
 
 Console.Write("Enter the port: ");
-int port = int.Parse(Console.ReadLine()!);
+string port = Console.ReadLine()!;
 
 Console.Write("Enter the token: ");
 string token = Console.ReadLine()!;
 
-Sdk.Initialize(new() {
-  Host = host,
-  Port = port,
-  Token = token
+Sdk.Initialize(new string[] {
+  "--token", token,
+  "--host", host,
+  "--port", port,
 });
 
 while (true) {

@@ -4,7 +4,7 @@ namespace NovelCraft.Utilities.Messages;
 
 
 
-public record ClientGetPlayerInfoMessage : MessageBase, IClientMessage {
+internal record ClientGetPlayerInfoMessage : MessageBase, IClientMessage {
   [JsonPropertyName("bound_to")]
   public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
 
@@ -16,7 +16,7 @@ public record ClientGetPlayerInfoMessage : MessageBase, IClientMessage {
 }
 
 
-public record ServerGetPlayerInfoMessage : MessageBase {
+internal record ServerGetPlayerInfoMessage : MessageBase {
   public record ItemStackType {
     [JsonPropertyName("type_id")]
     public required int TypeId { get; init; }

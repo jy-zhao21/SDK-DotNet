@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace NovelCraft.Utilities.Messages;
 
-public record ServerAfterEntityHurtMessage : MessageBase {
+internal record ServerAfterEntityHurtMessage : MessageBase {
   public record HurtType {
     [JsonPropertyName("victim_unique_id")]
     public required int VictimUniqueId { get; init; }

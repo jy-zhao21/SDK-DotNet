@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace NovelCraft.Utilities.Messages;
 
-public record ServerAfterBlockChangeMessage : MessageBase {
+internal record ServerAfterBlockChangeMessage : MessageBase {
   public record ChangeType {
     [JsonPropertyName("position")]
     public required Position<int> Position { get; init; }

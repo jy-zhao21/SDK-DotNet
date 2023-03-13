@@ -1,3 +1,5 @@
+using CommandLine;
+
 using NovelCraft.Utilities.Logger;
 using NovelCraft.Utilities.Messages;
 
@@ -7,6 +9,18 @@ namespace NovelCraft.Sdk;
 /// The SDK.
 /// </summary>
 public static partial class Sdk {
+  private record CommandLineOptions {
+    [Option("token", Required = true, HelpText = "The token of the agent.")]
+    public required string Token { get; init; }
+
+    [Option("host", HelpText = "The host to connect.", Default = "localhost")]
+    public required string Host { get; init; }
+
+    [Option("port", HelpText = "The port to connect.", Default = 14514)]
+    public required int Port { get; init; }
+  }
+
+
   private const int GetInfoInterval = 10000;
   private const int PingInterval = 1000;
 
@@ -84,29 +98,46 @@ public static partial class Sdk {
   /// Initializes the SDK.
   /// </summary>
   /// <param name="config">The configuration of the SDK.</param>
-  public static void Initialize(Config config) {
-    _sdkLogger.Info("Initializing SDK...");
+  public static void Initialize(string[] args) {
+    try {
+      _sdkLogger.Info("Initializing SDK...");
 
-    _token = config.Token;
+      CommandLineOptions opt = CommandLine.Parser.Default.ParseArguments<CommandLineOptions>(args)
+        .MapResult(
+          opt => opt,
+          _ => throw new Exception("Invalid arguments")
+        );
 
-    // Initialize the client
-    _client = new Client(config.Host, config.Port);
-    _client.AfterMessageReceiveEvent += OnAfterMessageReceiveEvent;
+      Config config = new() {
+        Token = opt.Token,
+        Host = opt.Host,
+        Port = opt.Port
+      };
 
-    // Manually call the tick event to get information right away.
-    OnTick();
+      _token = config.Token;
 
-    // Initialize the timers.
-    _getInfoTimer.Elapsed += (sender, e) => OnTick();
-    _getInfoTimer.Start();
+      // Initialize the client
+      _client = new Client(config.Host, config.Port);
+      _client.AfterMessageReceiveEvent += OnAfterMessageReceiveEvent;
 
-    _pingTimer.Elapsed += (sender, e) => {
-      Client?.Send(new ClientPingMessage() {
-        Token = _token!,
-        SentTime = (decimal)DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond
-      });
-    };
-    _pingTimer.Start();
+      // Manually call the tick event to get information right away.
+      OnTick();
+
+      // Initialize the timers.
+      _getInfoTimer.Elapsed += (sender, e) => OnTick();
+      _getInfoTimer.Start();
+
+      _pingTimer.Elapsed += (sender, e) => {
+        Client?.Send(new ClientPingMessage() {
+          Token = _token!,
+          SentTime = (decimal)DateTime.Now.Ticks / TimeSpan.TicksPerMillisecond
+        });
+      };
+      _pingTimer.Start();
+
+    } catch (Exception e) {
+      throw new Exception("Failed to initialize SDK: ", e);
+    }
   }
 
   private static void OnAfterMessageReceiveEvent(object? sender, IMessage message) {

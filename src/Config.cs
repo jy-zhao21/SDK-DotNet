@@ -7,7 +7,7 @@ namespace NovelCraft.Sdk;
 /// <summary>
 /// Represents the configuration of the SDK.
 /// </summary>
-public record class Config {
+internal record class Config {
   /// <summary>
   /// The IP address or host name of the server.
   /// </summary>

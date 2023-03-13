@@ -4,7 +4,7 @@ namespace NovelCraft.Utilities.Messages;
 
 
 
-public record ClientGetTickMessage : MessageBase, IClientMessage {
+internal record ClientGetTickMessage : MessageBase, IClientMessage {
   [JsonPropertyName("bound_to")]
   public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
 
@@ -16,7 +16,7 @@ public record ClientGetTickMessage : MessageBase, IClientMessage {
 }
 
 
-public record ServerGetTickMessage : MessageBase {
+internal record ServerGetTickMessage : MessageBase {
   [JsonPropertyName("bound_to")]
   public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ClientBound;
 

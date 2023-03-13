@@ -4,7 +4,7 @@ using System.Text.Json.Serialization;
 
 namespace NovelCraft.Utilities.Messages;
 
-public record EmptyMessage : IMessage {
+internal record EmptyMessage : IMessage {
   [JsonPropertyName("bound_to")]
   public IMessage.BoundToKind BoundTo { get; init; }
 

@@ -4,7 +4,7 @@ namespace NovelCraft.Utilities.Messages;
 
 
 
-public record ClientGetBlocksAndEntitiesMessage : MessageBase, IClientMessage {
+internal record ClientGetBlocksAndEntitiesMessage : MessageBase, IClientMessage {
   [JsonPropertyName("bound_to")]
   public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
 
@@ -19,7 +19,7 @@ public record ClientGetBlocksAndEntitiesMessage : MessageBase, IClientMessage {
 }
 
 
-public record ServerGetBlocksAndEntitiesMessage : MessageBase {
+internal record ServerGetBlocksAndEntitiesMessage : MessageBase {
   public record SectionType {
     [JsonPropertyName("position")]
     public required Position<int> Position { get; init; }

@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace NovelCraft.Utilities.Messages;
 
-public record ServerAfterEntityPositionChangeMessage : MessageBase {
+internal record ServerAfterEntityPositionChangeMessage : MessageBase {
   public record ChangeType {
     [JsonPropertyName("unique_id")]
     public required int UniqueId { get; init; }

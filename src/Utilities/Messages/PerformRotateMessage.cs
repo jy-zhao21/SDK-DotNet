@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace NovelCraft.Utilities.Messages;
 
 
-public record ClientPerformRotateMessage : MessageBase, IClientMessage {
+internal record ClientPerformRotateMessage : MessageBase, IClientMessage {
   [JsonPropertyName("bound_to")]
   public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
 

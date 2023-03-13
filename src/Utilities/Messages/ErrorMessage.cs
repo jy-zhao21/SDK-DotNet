@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 namespace NovelCraft.Utilities.Messages;
 
 
-public record ErrorMessage : MessageBase, IErrorMessage {
+internal record ErrorMessage : MessageBase, IErrorMessage {
   [JsonPropertyName("bound_to")]
   public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ClientBound;
 

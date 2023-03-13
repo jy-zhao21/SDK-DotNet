@@ -2,7 +2,7 @@ using System.Text.Json.Serialization;
 
 namespace NovelCraft.Utilities.Messages;
 
-public record ServerAfterPlayerInventoryChangeMessage : MessageBase {
+internal record ServerAfterPlayerInventoryChangeMessage : MessageBase {
   public record ChangeType {
     [JsonPropertyName("player_unique_id")]
     public required int PlayerUniqueId { get; init; }
