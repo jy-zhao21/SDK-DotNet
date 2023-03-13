@@ -10,7 +10,7 @@ namespace NovelCraft.Sdk;
 /// </summary>
 public static partial class Sdk {
   private record CommandLineOptions {
-    [Option("token", Required = true, HelpText = "The token of the agent.")]
+    [Option("token", HelpText = "The token of the agent.", Default = "")]
     public required string Token { get; init; }
 
     [Option("host", HelpText = "The host to connect.", Default = "localhost")]
@@ -102,9 +102,11 @@ public static partial class Sdk {
     try {
       _sdkLogger.Info("Initializing SDK...");
 
-      CommandLine.Parser.Default.Settings.HelpWriter = null;
+      CommandLine.Parser parser = new(settings => {
+        settings.HelpWriter = null;
+      });
 
-      CommandLineOptions opt = CommandLine.Parser.Default.ParseArguments<CommandLineOptions>(args)
+      CommandLineOptions opt = parser.ParseArguments<CommandLineOptions>(args)
         .MapResult(
           opt => opt,
           _ => throw new Exception("Invalid arguments")
@@ -138,7 +140,7 @@ public static partial class Sdk {
       _pingTimer.Start();
 
     } catch (Exception e) {
-      throw new Exception("Failed to initialize SDK: ", e);
+      throw new Exception($"Failed to initialize SDK: {e.Message}", e);
     }
   }
 
