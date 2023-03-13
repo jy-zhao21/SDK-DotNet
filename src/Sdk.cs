@@ -102,6 +102,8 @@ public static partial class Sdk {
     try {
       _sdkLogger.Info("Initializing SDK...");
 
+      CommandLine.Parser.Default.Settings.HelpWriter = null;
+
       CommandLineOptions opt = CommandLine.Parser.Default.ParseArguments<CommandLineOptions>(args)
         .MapResult(
           opt => opt,
