@@ -28,4 +28,4 @@ jobs:
 
       - name: Run tests
         run: |
-          dotnet test tests
+          dotnet test test
