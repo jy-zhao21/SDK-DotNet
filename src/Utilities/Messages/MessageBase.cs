@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 namespace NovelCraft.Utilities.Messages;
 
 
-public abstract record MessageBase : IMessage {
+internal abstract record MessageBase : IMessage {
   [JsonIgnore]
   public JsonNode Json {
     get => JsonNode.Parse(JsonSerializer.Serialize((object)this))!;
