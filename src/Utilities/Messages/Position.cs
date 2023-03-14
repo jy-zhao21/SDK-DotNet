@@ -1,16 +1,15 @@
 using System.Text.Json.Serialization;
 
-namespace NovelCraft.Utilities.Messages {
+namespace NovelCraft.Utilities.Messages;
 
 
-  public record Position<T> : IPosition<T> {
-    [JsonPropertyName("x")]
-    public T X { get; init; } = default!;
+public record Position<T> : IPosition<T> {
+  [JsonPropertyName("x")]
+  public required T X { get; init; }
 
-    [JsonPropertyName("y")]
-    public T Y { get; init; } = default!;
+  [JsonPropertyName("y")]
+  public required T Y { get; init; }
 
-    [JsonPropertyName("z")]
-    public T Z { get; init; } = default!;
-  }
+  [JsonPropertyName("z")]
+  public required T Z { get; init; }
 }

@@ -1,18 +1,16 @@
-namespace NovelCraft.Sdk {
+namespace NovelCraft.Sdk;
+
+/// <summary>
+/// Represents a collection of blocks.
+/// </summary>
+public interface IBlockSource {
+  /// <summary>
+  /// Gets the block at the specified position.
+  /// </summary>
+  IBlock? this[IPosition<int> position] { get; }
 
   /// <summary>
-  /// Represents a collection of blocks.
+  /// Gets the count of blocks loaded.
   /// </summary>
-  public interface IBlockSource {
-    /// <summary>
-    /// Gets the block at the specified position.
-    /// </summary>
-    IBlock? this[IPosition<int> position] { get; }
-
-    /// <summary>
-    /// Gets the count of blocks loaded.
-    /// </summary>
-    int Count { get; }
-  }
-
+  int Count { get; }
 }

@@ -1,32 +1,31 @@
 using System.Text.Json.Serialization;
 
-namespace NovelCraft.Utilities.Messages {
+namespace NovelCraft.Utilities.Messages;
 
 
 
-  internal record ClientGetTickMessage : MessageBase, IClientMessage {
-    [JsonPropertyName("bound_to")]
-    public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
+internal record ClientGetTickMessage : MessageBase, IClientMessage {
+  [JsonPropertyName("bound_to")]
+  public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
 
-    [JsonPropertyName("type")]
-    public override IMessage.MessageKind Type => IMessage.MessageKind.GetTick;
+  [JsonPropertyName("type")]
+  public override IMessage.MessageKind Type => IMessage.MessageKind.GetTick;
 
-    [JsonPropertyName("token")]
-    public string Token { get; init; } = string.Empty;
-  }
+  [JsonPropertyName("token")]
+  public required string Token { get; init; }
+}
 
 
-  internal record ServerGetTickMessage : MessageBase {
-    [JsonPropertyName("bound_to")]
-    public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ClientBound;
+internal record ServerGetTickMessage : MessageBase {
+  [JsonPropertyName("bound_to")]
+  public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ClientBound;
 
-    [JsonPropertyName("type")]
-    public override IMessage.MessageKind Type => IMessage.MessageKind.GetTick;
+  [JsonPropertyName("type")]
+  public override IMessage.MessageKind Type => IMessage.MessageKind.GetTick;
 
-    [JsonPropertyName("tick")]
-    public int Tick { get; init; }
+  [JsonPropertyName("tick")]
+  public required int Tick { get; init; }
 
-    [JsonPropertyName("ticks_per_second")]
-    public decimal TicksPerSecond { get; init; }
-  }
+  [JsonPropertyName("ticks_per_second")]
+  public required decimal TicksPerSecond { get; init; }
 }

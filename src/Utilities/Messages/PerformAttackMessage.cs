@@ -1,28 +1,27 @@
 using System.Text.Json.Serialization;
 
-namespace NovelCraft.Utilities.Messages {
+namespace NovelCraft.Utilities.Messages;
 
 
 
-  internal record ClientPerformAttackMessage : MessageBase, IClientMessage {
-    [JsonPropertyName("bound_to")]
-    public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
+internal record ClientPerformAttackMessage : MessageBase, IClientMessage {
+  [JsonPropertyName("bound_to")]
+  public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
 
-    [JsonPropertyName("type")]
-    public override IMessage.MessageKind Type => IMessage.MessageKind.PerformAttack;
+  [JsonPropertyName("type")]
+  public override IMessage.MessageKind Type => IMessage.MessageKind.PerformAttack;
 
-    [JsonPropertyName("token")]
-    public string Token { get; init; } = string.Empty;
+  [JsonPropertyName("token")]
+  public required string Token { get; init; }
 
-    public enum AttackType {
-      AttackClick,
-      HoldStart,
-      HoldEnd
-    };
+  public enum AttackType {
+    AttackClick,
+    HoldStart,
+    HoldEnd
+  };
 
-    [JsonPropertyName("attack_kind")]
-    public AttackType AttackKind { get; init; }
+  [JsonPropertyName("attack_kind")]
+  public required AttackType AttackKind { get; init; }
 
 
-  }
 }
