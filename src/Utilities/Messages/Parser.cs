@@ -7,7 +7,7 @@ namespace NovelCraft.Utilities.Messages;
 /// <summary>
 /// Parses messages from JSON.
 /// </summary>
-public static class Parser {
+internal static class Parser {
   /// <summary>
   /// Parses a message from JSON.
   /// </summary>
