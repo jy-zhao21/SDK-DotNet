@@ -182,6 +182,11 @@ public static partial class Sdk {
           _entitySource[entity.UniqueId] = new Entity(entity.UniqueId, entity.TypeId,
             new Position<decimal>(entity.Position.X, entity.Position.Y, entity.Position.Z),
             new Orientation(entity.Orientation.Yaw, entity.Orientation.Pitch));
+
+          if (_agent is not null && entity.UniqueId == _agent.UniqueId) {
+            _agent.Position = new Position<decimal>(entity.Position.X, entity.Position.Y, entity.Position.Z);
+            _agent.Orientation = new Orientation(entity.Orientation.Yaw, entity.Orientation.Pitch);
+          }
         }
         break;
 
@@ -268,9 +273,14 @@ public static partial class Sdk {
         if (Entities is not null) {
           foreach (var changeInfo in msg.ChangeList) {
             var entity = Entities[changeInfo.UniqueId];
-            if (entity is not null)
+            if (entity is not null) {
               ((EntitySource)Entities)[changeInfo.UniqueId] = new Entity(entity.UniqueId, entity.TypeId, entity.Position,
               new Orientation(changeInfo.Orientation.Yaw, changeInfo.Orientation.Pitch));
+            }
+
+            if (_agent is not null && changeInfo.UniqueId == _agent.UniqueId) {
+              _agent.Orientation = new Orientation(changeInfo.Orientation.Yaw, changeInfo.Orientation.Pitch);
+            }
           }
         }
         break;
@@ -280,10 +290,15 @@ public static partial class Sdk {
         if (Entities is not null) {
           foreach (var changeInfo in msg.ChangeList) {
             var entity = Entities[changeInfo.UniqueId];
-            if (entity is not null)
+            if (entity is not null) {
               ((EntitySource)Entities)[changeInfo.UniqueId] = new Entity(entity.UniqueId, entity.TypeId,
               new Position<decimal>(changeInfo.Position.X, changeInfo.Position.Y, changeInfo.Position.Z),
               entity.Orientation);
+            }
+
+            if (_agent is not null && changeInfo.UniqueId == _agent.UniqueId) {
+              _agent.Position = new Position<decimal>(changeInfo.Position.X, changeInfo.Position.Y, changeInfo.Position.Z);
+            }
           }
         }
         break;
