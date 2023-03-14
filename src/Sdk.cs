@@ -111,17 +111,11 @@ public static partial class Sdk {
           opt => opt,
           _ => throw new Exception("Invalid arguments")
         );
-
-      Config config = new() {
-        Token = opt.Token,
-        Host = opt.Host,
-        Port = opt.Port
-      };
-
-      _token = config.Token;
+        
+      _token = opt.Token;
 
       // Initialize the client
-      _client = new Client(config.Host, config.Port);
+      _client = new Client(opt.Host, opt.Port);
       _client.AfterMessageReceiveEvent += OnAfterMessageReceiveEvent;
 
       // Manually call the tick event to get information right away.
