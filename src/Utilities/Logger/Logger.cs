@@ -47,7 +47,7 @@ internal class Logger : ILogger {
   /// Logs an warning message.
   /// </summary>
   /// <param name="message">The message</param>
-  public void Warning(string message) {
+  public void Warn(string message) {
     lock (Console.Out) {
       Print($"{GetCurrentTimeString()} ", ConsoleColor.Cyan);
       Print($"WARN  ", ConsoleColor.Yellow);

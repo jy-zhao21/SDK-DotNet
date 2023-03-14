@@ -17,7 +17,7 @@ public interface ILogger {
   /// <summary>
   /// Logs an warning message.
   /// </summary>
-  public void Warning(string message);
+  public void Warn(string message);
 
   /// <summary>
   /// Logs an error message.
