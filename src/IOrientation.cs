@@ -1,16 +1,18 @@
-namespace NovelCraft.Sdk;
-
-/// <summary>
-/// Represents an orientation.
-/// </summary>
-public interface IOrientation {
-  /// <summary>
-  /// Gets or sets the yaw of the orientation.
-  /// </summary>
-  public decimal Yaw { get; set; }
+namespace NovelCraft.Sdk {
 
   /// <summary>
-  /// Gets or sets the pitch of the orientation.
+  /// Represents an orientation.
   /// </summary>
-  public decimal Pitch { get; set; }
+  public interface IOrientation {
+    /// <summary>
+    /// Gets or sets the yaw of the orientation.
+    /// </summary>
+    public decimal Yaw { get; set; }
+
+    /// <summary>
+    /// Gets or sets the pitch of the orientation.
+    /// </summary>
+    public decimal Pitch { get; set; }
+  }
+
 }

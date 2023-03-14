@@ -1,51 +1,52 @@
 using System.Text.Json.Serialization;
 
-namespace NovelCraft.Utilities.Messages;
+namespace NovelCraft.Utilities.Messages {
 
 
 
-internal record ClientGetPlayerInfoMessage : MessageBase, IClientMessage {
-  [JsonPropertyName("bound_to")]
-  public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
+  internal record ClientGetPlayerInfoMessage : MessageBase, IClientMessage {
+    [JsonPropertyName("bound_to")]
+    public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ServerBound;
 
-  [JsonPropertyName("type")]
-  public override IMessage.MessageKind Type => IMessage.MessageKind.GetPlayerInfo;
+    [JsonPropertyName("type")]
+    public override IMessage.MessageKind Type => IMessage.MessageKind.GetPlayerInfo;
 
-  [JsonPropertyName("token")]
-  public required string Token { get; init; }
-}
-
-
-internal record ServerGetPlayerInfoMessage : MessageBase {
-  public record ItemStackType {
-    [JsonPropertyName("type_id")]
-    public required int TypeId { get; init; }
-
-    [JsonPropertyName("count")]
-    public required int Count { get; init; }
+    [JsonPropertyName("token")]
+    public string Token { get; init; } = string.Empty;
   }
 
-  [JsonPropertyName("bound_to")]
-  public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ClientBound;
 
-  [JsonPropertyName("type")]
-  public override IMessage.MessageKind Type => IMessage.MessageKind.GetPlayerInfo;
+  internal record ServerGetPlayerInfoMessage : MessageBase {
+    public record ItemStackType {
+      [JsonPropertyName("type_id")]
+      public int TypeId { get; init; }
 
-  [JsonPropertyName("health")]
-  public required decimal Health { get; init; }
+      [JsonPropertyName("count")]
+      public int Count { get; init; }
+    }
 
-  [JsonPropertyName("orientation")]
-  public required Orientation Orientation { get; init; }
+    [JsonPropertyName("bound_to")]
+    public override IMessage.BoundToKind BoundTo => IMessage.BoundToKind.ClientBound;
 
-  [JsonPropertyName("position")]
-  public required Position<decimal> Position { get; init; }
+    [JsonPropertyName("type")]
+    public override IMessage.MessageKind Type => IMessage.MessageKind.GetPlayerInfo;
 
-  [JsonPropertyName("main_hand")]
-  public required int MainHand { get; init; }
+    [JsonPropertyName("health")]
+    public decimal Health { get; init; }
 
-  [JsonPropertyName("inventory")]
-  public required List<ItemStackType?> Inventory { get; init; }
+    [JsonPropertyName("orientation")]
+    public Orientation Orientation { get; init; } = new();
 
-  [JsonPropertyName("unique_id")]
-  public required int UniqueId { get; init; }
+    [JsonPropertyName("position")]
+    public Position<decimal> Position { get; init; } = new();
+
+    [JsonPropertyName("main_hand")]
+    public int MainHand { get; init; }
+
+    [JsonPropertyName("inventory")]
+    public List<ItemStackType?> Inventory { get; init; } = new();
+
+    [JsonPropertyName("unique_id")]
+    public int UniqueId { get; init; }
+  }
 }
