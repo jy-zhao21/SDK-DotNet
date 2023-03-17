@@ -36,48 +36,6 @@
         "zh": "<no translation>"
     },
     {
-        "key": " ArraySegment<byte> ",
-        "prefix": "<returns>",
-        "suffix": "</returns>",
-        "zh": "<no translation>"
-    },
-    {
-        "key": "Represents the configuration of the SDK.",
-        "prefix": "",
-        "suffix": "",
-        "zh": "<no translation>"
-    },
-    {
-        "key": "The IP address or host name of the server.",
-        "prefix": "",
-        "suffix": "",
-        "zh": "<no translation>"
-    },
-    {
-        "key": "The name of the client.",
-        "prefix": "",
-        "suffix": "",
-        "zh": "<no translation>"
-    },
-    {
-        "key": "The port of the server.",
-        "prefix": "",
-        "suffix": "",
-        "zh": "<no translation>"
-    },
-    {
-        "key": "The token of the client.",
-        "prefix": "",
-        "suffix": "",
-        "zh": "<no translation>"
-    },
-    {
-        "key": "Gets the JSON representation of the configuration.",
-        "prefix": "",
-        "suffix": "",
-        "zh": "<no translation>"
-    },
-    {
         "key": "An agent is a player that can be controlled by an AI.",
         "prefix": "",
         "suffix": "",
@@ -438,12 +396,6 @@
         "zh": "<no translation>"
     },
     {
-        "key": "Gets the latency between the client and the server.",
-        "prefix": "",
-        "suffix": "",
-        "zh": "<no translation>"
-    },
-    {
         "key": "Gets current tick.",
         "prefix": "",
         "suffix": "",
@@ -469,6 +421,114 @@
     },
     {
         "key": "Represents a block in the world.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the bandwidth (in Mbps) between the client and the server.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets the health of the olayer.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Represents an entity in the game world.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Represents an inventory.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Represents an item stack.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Represents an orientation.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets or sets the yaw of the orientation.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets or sets the pitch of the orientation.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Represents a position.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets or sets the X coordinate of the position.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets or sets the Y coordinate of the position.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Gets or sets the Z coordinate of the position.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "The orientation of an object.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Creates from an existing orientation.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Creates from yaw and pitch.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "A position in a three-dimensional space.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Creates from an existing position.",
+        "prefix": "",
+        "suffix": "",
+        "zh": "<no translation>"
+    },
+    {
+        "key": "Creates from x, y and z.",
         "prefix": "",
         "suffix": "",
         "zh": "<no translation>"
